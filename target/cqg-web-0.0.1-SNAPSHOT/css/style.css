@@ -1,0 +1,93 @@
+body{
+	/* edfafc
+	cbf5f9 */
+	background:-webkit-linear-gradient(top,#edfafc,#cbf5f9);
+	height: auto;
+}
+dl{
+	width: 85%;
+	height: 44px;
+	margin: 0 auto;
+	background: #fff;
+	border-top : 1px solid #ecfafb;
+}
+dl.first{
+	border-radius: 5px 5px 0 0;
+	margin-top: 30px;
+	border-top:0px;
+}
+dl.end{
+	border-radius: 0 0 5px 5px;
+}
+dl dt{
+	color: #666;
+	font-size: 14px;
+}
+dl dd{
+	width: 100%;
+	height: 30px;
+	overflow: hidden;
+	padding-top: 7px;
+}
+dl dd input{
+	width: 100%;
+	height: 30px;
+	line-height: 26px;
+	border: 0;
+	font-size: 14px;
+	color: #000;
+	text-indent: 5px;
+}
+dl.code dd.code_num{
+	width: 60%;
+	float: left;
+}
+dl.code dd.btn_get{
+	width: 30%;
+	height: 30px;
+	text-align: center;
+	line-height: 30px;
+	float: left;
+	font-size: 14px;
+	margin-left: 5%;
+	background-color: #25c3da;
+	color: #fff;
+	padding-top: 0px;
+	margin-top: 7px;
+}
+.btn_refist , .btn_login , .btn_logout{
+	width: 85%;
+	height: 40px;
+	text-align: center;
+	line-height: 40px;
+	color: #fff;
+	font-size: 16px;
+	margin: 0 auto;
+	margin-top: 30px;
+	background-color: #25c3da;
+	border-radius: 5px;
+	-webkit-border-radius: 5px;
+	-moz-border-radius: 5px;
+}
+dl.code dd.un{
+	background-color: #e0e0e0;
+}
+.logo{
+	width:123px;
+	height:52px;
+	background:url("/weixin/img/logo.png");
+	background-repeat:no-repeat;
+	background-size:123px;
+	margin:0 auto;
+	margin-top:30px;
+}
+.goto_regist{
+	width: 85%;
+  text-align: right;
+  margin: 0 auto;
+  height: 24px;
+  line-height: 24px;
+  margin-top: 10px;
+  color: #25c3da;
+  font-size: 14px;
+}
