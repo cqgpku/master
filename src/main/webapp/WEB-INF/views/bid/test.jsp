@@ -25,7 +25,7 @@
 	</head>
 	<body style="background: #eeeeee;">
 		
-		
+		<div style="width:100%;height:88px;font-size: 28px;line-height: 88px;">${phone} 已登录</div>
 		<div class="addbank_middle">
 		<div class="addbank_middle box">
 		<div class="addbank_middle box left">

@@ -144,7 +144,8 @@ public class AccountController extends BaseController{
 		try {
 			String http_result = HttpUtil.httpPost(Constants.registurl, params);
 			JSONObject jo = JSONObject.fromObject(http_result);
-			if ("100".equals(jo.get("result"))) {
+			
+			if ("100".equals(jo.get("result").toString())) {
 				result.put("code", "0");
 				result.put("mess", "注册成功！");
 				return result;
@@ -153,6 +154,7 @@ public class AccountController extends BaseController{
 				result.put("mess", jo.getString("resultDesc"));
 				return result;
 			}
+			
 		} catch (Exception e) {
 			log.info("请求注册接口失败,error:"+e.getMessage());
 			result.put("mess", "注册失败");
@@ -169,7 +171,7 @@ public class AccountController extends BaseController{
 			if (!StringUtils.isBlank(nop)) {
 				model.addAttribute("phone" , nop);
 				model.addAttribute("rootdomain", rootdomain);
-				return "logined";
+				return "bid/test";
 			}
 		}
 		
@@ -204,7 +206,7 @@ public class AccountController extends BaseController{
 				result.put("code", "0");
 				result.put("mess", "登录成功！");
 				this.setCookie(Constants.cookie_key, AESUtil.encrypt(nicknameorphone), Constants.EXP_ONEDAY);
-				this.setCookie(Constants.cookie_username, AESUtil.encrypt(jo.get("username").toString()), Constants.EXP_ONEDAY);
+				this.setCookie(Constants.cookie_username, AESUtil.encrypt(jo.get("userName").toString()), Constants.EXP_ONEDAY);
 				this.setCookie(Constants.cookie_realstatus, AESUtil.encrypt(jo.get("real_status").toString()), Constants.EXP_ONEDAY);
 				this.setCookie(Constants.cookie_phone, AESUtil.encrypt(jo.get("phone").toString()), Constants.EXP_ONEDAY);
 				return result;

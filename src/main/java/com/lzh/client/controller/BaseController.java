@@ -69,7 +69,7 @@ public abstract class BaseController {
 //			userCookie.setDomain(".58.com") ;
 //		}else {
 			//userCookie.setDomain(Setting.getSetting("cookiedomain")) ;
-			userCookie.setDomain(".58v5.cn") ;
+			//userCookie.setDomain(".58v5.cn") ;
 //		}
 		this.getResponse().addCookie(userCookie); 
 		return value;
