@@ -17,6 +17,7 @@
 		<meta name="description" content="" />
 		<link rel="stylesheet" href="<%=path%>/css/reset.css">
 		<link rel="stylesheet" href="<%=path%>/css/style.css">
+		<script type="text/javascript" src="<%=path%>/js/jquery.js"></script>
 		<!-- <link rel="stylesheet" href="/css/reset.css">
 		<link rel="stylesheet" href="/css/style.css"> -->
 		<script>
@@ -30,21 +31,21 @@
 		<img alt="#" src="img/undone.png">&nbsp;
 		<label>实名认证</label></div>
 		<div class="accountmanage_box right">
-		<label>未认证 ></label></div>
+		<label>${realname==""?"未认证":"已认证"}></label></div>
 		</div>
 		<div class="accountmanage_box">
 		<div class="accountmanage_box left">
 		<img alt="#" src="img/done.png">&nbsp;
 		<label>绑定手机</label></div>
 		<div class="accountmanage_box right">
-		<label>188****0207</label></div>
+		<label>${bindphone}</label></div>
 		</div>
 		<div class="accountmanage_box">
 		<div class="accountmanage_box left">
 		<img alt="#" src="img/done.png">&nbsp;
 		<label>绑定邮箱</label></div>
 		<div class="accountmanage_box right">
-		<label>61881604@qq.com ></label></div>
+		<label>${bindemail} ></label></div>
 		</div>
 		<div class="accountmanage_box">
 		<div class="accountmanage_box left">

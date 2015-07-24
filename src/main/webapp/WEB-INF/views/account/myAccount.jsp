@@ -17,6 +17,7 @@
 		<meta name="description" content="" />
 		<link rel="stylesheet" href="<%=path%>/css/reset.css">
 		<link rel="stylesheet" href="<%=path%>/css/style.css">
+		<script type="text/javascript" src="<%=path%>/js/jquery.js"></script>
 		<!-- <link rel="stylesheet" href="/css/reset.css">
 		<link rel="stylesheet" href="/css/style.css"> -->
 		<script>
@@ -37,17 +38,17 @@
 		</div>
 		<div class="account_top_middle_label">
 		<label style="width:150px;height:30px;font-size:14px;">累计收益(元)</label><br>
-		<label style="width:200px;height:80px;font-size:18px;">100,250.00</label>
+		<label id="accumulatedIncome" style="width:200px;height:80px;font-size:18px;">100,250.00</label>
 		</div>
 		</div>
 		<div class="account_top bottom">
 				<div class="account_top_bottom_label">
 		<label style="width:150px;height:20px;font-size:14px;">可用金额(元)</label><br>
-		<label style="width:200px;height:40px;font-size:18px;">100.00</label>
+		<label id="availableAmount" style="width:200px;height:40px;font-size:18px;">100.00</label>
 		</div>
 		<div class="account_top_bottom_label">
 		<label style="width:150px;height:20px;font-size:14px;">账户总额(元)</label><br>
-		<label style="width:200px;height:40px;font-size:18px;">100,2500.00</label>
+		<label id="accountTotalAmount" style="width:200px;height:40px;font-size:18px;">100,2500.00</label>
 		</div>
 		
 		</div>
@@ -99,4 +100,17 @@
 		
 		
 	</body>
+	<script>
+	
+	init();
+	
+	function init(){
+		var info=${info};
+		if(!(info==""||info==null)){
+			$("#accumulatedIncome").html("${info.accumulatedIncome}");
+			$("#availableAmount").html("${info.availableAmount}");
+			$("#accountTotalAmount").html("${info.accountTotalAmount}");
+		}
+	}
+	</script>
 </html>

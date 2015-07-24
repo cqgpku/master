@@ -12,7 +12,7 @@
 		<meta name="viewport" content="initial-scale=1.0,maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,maximum-scale=1, user-scalable=no">
 		<meta name="format-detection" content="telephone=no" />
 		<meta name="format-detection" content="email=no" />
-		<title>更多功能</title>
+		<title>关于</title>
 		<meta name="keywords" content="" />
 		<meta name="description" content="" />
 		<link rel="stylesheet" href="<%=path%>/css/reset.css">

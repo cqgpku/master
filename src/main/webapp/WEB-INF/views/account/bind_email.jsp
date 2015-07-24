@@ -7,29 +7,16 @@
 %>
 <!doctype html>
 <html>
-	<head>
-		<meta charset="utf-8" />
-		<meta name="viewport" content="initial-scale=1.0,maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,maximum-scale=1, user-scalable=no">
-		<meta name="format-detection" content="telephone=no" />
-		<meta name="format-detection" content="email=no" />
-	
-		<meta name="keywords" content="" />
-		<meta name="description" content="" />
-		<title>绑定邮箱</title>
-    <link href="dist/css/normalize.css" rel="stylesheet">
-    <link href="dist/css/style.css" rel="stylesheet">
-		<script>
-			var rooturl = "<%=basePath%>";
-		</script>
-	</head>
-	
-<!DOCTYPE html>
-<html>
 <head lang="en">
     <meta charset="UTF-8">
     <title>绑定邮箱</title>
     <link href="dist/css/normalize.css" rel="stylesheet">
     <link href="dist/css/style.css" rel="stylesheet">
+      <script type="text/javascript" src="<%=path%>/js/jquery.js"></script>
+		<script>
+			var rooturl = "<%=basePath%>";
+		</script>
+	</head>
 </head>
 <body>
 <div class="be">

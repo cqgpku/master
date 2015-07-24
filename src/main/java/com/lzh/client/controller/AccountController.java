@@ -1,6 +1,8 @@
 package com.lzh.client.controller;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import net.sf.json.JSONObject;
@@ -17,6 +19,8 @@ import com.lzh.client.util.Constants;
 import com.lzh.client.util.HttpUtil;
 import com.lzh.client.util.PhoneUtil;
 import com.lzh.client.util.StringUtils;
+import com.lzh.client.viewmodel.HeadImgVo;
+import com.lzh.client.viewmodel.TradeRecord;
 
 @Controller
 public class AccountController extends BaseController{
@@ -68,13 +72,18 @@ public class AccountController extends BaseController{
 		params.put("userName", phone);
 		try {
 			String http_result = HttpUtil.httpPost(Constants.existurl, params);
-			JSONObject jo = JSONObject.fromObject(http_result);
-			if ("100".equals(jo.get("result"))) {
+			if("".equals(http_result)){
 				result.put("code", "0");
 				return result;
-			}else {
-				result.put("code", "1");
-				return result;
+			}else{
+				JSONObject jo = JSONObject.fromObject(http_result);
+				if ("100".equals(jo.get("result"))) {
+					result.put("code", "0");
+					return result;
+				}else {
+					result.put("code", "1");
+					return result;
+				}
 			}
 		} catch (Exception e) {
 			log.info("请求验证接口失败,error:"+e.getMessage());
@@ -195,6 +204,9 @@ public class AccountController extends BaseController{
 				result.put("code", "0");
 				result.put("mess", "登录成功！");
 				this.setCookie(Constants.cookie_key, AESUtil.encrypt(nicknameorphone), Constants.EXP_ONEDAY);
+				this.setCookie(Constants.cookie_username, AESUtil.encrypt(jo.get("username").toString()), Constants.EXP_ONEDAY);
+				this.setCookie(Constants.cookie_realstatus, AESUtil.encrypt(jo.get("real_status").toString()), Constants.EXP_ONEDAY);
+				this.setCookie(Constants.cookie_phone, AESUtil.encrypt(jo.get("phone").toString()), Constants.EXP_ONEDAY);
 				return result;
 			}else {
 				result.put("code", "1");
@@ -222,7 +234,29 @@ public class AccountController extends BaseController{
 	 */
 	@RequestMapping(value = "myaccount/page")
 	public String myaccount_page(Model model) {
-		model.addAttribute("rootdomain", rootdomain);
+		Map<String, String> result = new HashMap<String, String>();
+		Map<String, String> params = new HashMap<String, String>();
+		String http_result ="";
+		String name =this.getCookie(Constants.cookie_key);
+		
+		try {
+			http_result = HttpUtil.httpPost(Constants.investdetailurl, params);
+			JSONObject jo = JSONObject.fromObject(http_result);
+			if ("100".equals(jo.get("result"))) {
+				result.put("code", "100");
+				result.put("mess", "请求成功！");
+				
+			}else {
+				result.put("code", jo.get("result").toString());
+				result.put("mess", jo.getString("resultDesc"));
+			
+			}
+		} catch (Exception e) {
+			log.info("请求我的账户信息接口失败,error:"+e.getMessage());
+			result.put("mess", "请求失败");
+			
+		}
+		model.addAttribute("info", http_result);
 		return "account/myAccount";
 	}
 	
@@ -231,7 +265,25 @@ public class AccountController extends BaseController{
 	 */
 	@RequestMapping(value = "dsxq")
 	public String moneyCollection_page(Model model) {
-		model.addAttribute("rootdomain", rootdomain);
+		Map<String, String> params = new HashMap<String, String>();
+		String http_result ="";
+		String username =this.getCookie(Constants.cookie_key);
+		params.put("apiLevel", Constants.apiLevel+"");
+		try {
+			http_result = HttpUtil.httpPost(Constants.getcollectdetailsurl, params);
+			JSONObject jo = JSONObject.fromObject(http_result);
+			if ("100".equals(jo.get("result"))) {
+				log.info("code:100,message:代收详情接口请求成功");
+				
+			}else {
+				log.info("code:"+jo.get("result").toString()+",message:代收详情接口请求失败，错误信息"+jo.getString("resultDesc"));
+			
+			}
+		} catch (Exception e) {
+			log.info("请求代收详情信息接口失败，发生异常,error:"+e.getMessage());
+			
+		}
+		model.addAttribute("info", http_result);
 		return "account/moneyCollectionInfo";
 	}
 	
@@ -258,7 +310,28 @@ public class AccountController extends BaseController{
 	 */
 	@RequestMapping(value = "dealinfo")
 	public String dealinfo_page(Model model) {
-		model.addAttribute("rootdomain", rootdomain);
+		Map<String, String> params = new HashMap<String, String>();
+		String http_result ="";
+		String username =this.getCookie(Constants.cookie_key);
+		params.put("apiLevel", Constants.apiLevel+"");
+		params.put("pageNo", "1");
+		params.put("pageSize", "5");
+		List<TradeRecord> records=new ArrayList<TradeRecord>();
+		try {
+			http_result = HttpUtil.httpPost(Constants.traderecordlisturl, params);
+			JSONObject jo = JSONObject.fromObject(http_result);
+			if ("100".equals(jo.get("result"))) {
+				log.info("code:100,message:交易记录接口请求成功");
+				
+			}else {
+				log.info("code:"+jo.get("result").toString()+",message:交易记录接口请求失败，错误信息"+jo.getString("resultDesc"));
+			
+			}
+		} catch (Exception e) {
+			log.info("请求交易记录信息接口失败，发生异常,error:"+e.getMessage());
+			
+		}
+		model.addAttribute("info", http_result);
 		return "account/dealInfo";
 	}
 	
@@ -267,7 +340,27 @@ public class AccountController extends BaseController{
 	 */
 	@RequestMapping(value = "homepage")
 	public String homepage_page(Model model) {
-		model.addAttribute("rootdomain", rootdomain);
+		Map<String, String> params = new HashMap<String, String>();
+		String http_result ="";
+		String username =this.getCookie(Constants.cookie_key);
+		params.put("apiLevel", Constants.apiLevel+"");
+		List<HeadImgVo> imgs=new ArrayList<HeadImgVo>();
+		try {
+			http_result = HttpUtil.httpPost(Constants.homepageurl, params);
+			JSONObject jo = JSONObject.fromObject(http_result);
+			if ("100".equals(jo.get("result"))) {
+				log.info("code:100,message:首页接口请求成功");
+				
+				imgs=jo.getJSONArray("headImgList");
+			}else {
+				log.info("code:"+jo.get("result").toString()+",message:首页接口请求失败，错误信息"+jo.getString("resultDesc"));
+			
+			}
+		} catch (Exception e) {
+			log.info("请求首页信息接口失败，发生异常,error:"+e.getMessage());
+			
+		}
+		model.addAttribute("info", http_result);
 		return "homePage";
 	}
 	
@@ -276,7 +369,14 @@ public class AccountController extends BaseController{
 	 */
 	@RequestMapping(value = "accountmanage")
 	public String accountmanage_page(Model model) {
-		model.addAttribute("rootdomain", rootdomain);
+		
+		String realname =this.getCookie(Constants.cookie_realname);
+		String bindemail =this.getCookie(Constants.cookie_email);
+		String bindphone =this.getCookie(Constants.cookie_phone);
+	
+		model.addAttribute("realname", realname);
+		model.addAttribute("bindemail", bindemail);
+		model.addAttribute("bindphone", bindphone);
 		return "account/accountManage";
 	}
 	

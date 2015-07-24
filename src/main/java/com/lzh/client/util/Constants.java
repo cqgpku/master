@@ -34,7 +34,7 @@ public class Constants {
 	 * 示例：http://pay.cqg365.com/p2p/app/getInvestListByArea.html?areaType=3&pageNo=1&pageSize=10&status=14&borrowType=100&time_limit=all&apr=all&account=all
 	 * 参数：见文档
 	 */
-	public static String investlisturl = "http://pay.cqg365.com/p2p/app/ getInvestListByArea.html";
+	public static String investlisturl = "http://pay.cqg365.com/p2p/app/getInvestListByArea.html";
 	
 	/*
 	 * 标的详情接口
@@ -265,7 +265,7 @@ public class Constants {
 	 * 示例：http://pay.cqg365.com/p2p/app/sendPhoneCodeAddBank.html
 	 * 参数：见文档
 	 */
-	public static String sendphonecodeaddbankurl = "http://pay.cqg365.com/p2p/app/ sendPhoneCodeAddBank.html";
+	public static String sendphonecodeaddbankurl = "http://pay.cqg365.com/p2p/app/sendPhoneCodeAddBank.html";
 	
 	
 	
@@ -279,4 +279,12 @@ public class Constants {
 	public static final int apiLevel = 1;
 	public static final String cookie_key = "cqg_lpc";
 	public static final int EXP_ONEDAY = 24 * 60 * 60;
+	/**cookies相关的数据*/
+	public static final String cookie_name = "cqg_name";
+	public static final String cookie_email = "cqg_email";
+	public static final String cookie_realstatus = "cqg_realstatus";
+	public static final String cookie_realname = "cqg_realname";
+	public static final String cookie_phone = "cqg_phone";
+	public static final String cookie_tradepwd = "cqg_tradepwd";
+	public static final String cookie_username = "cqg_username";
 }

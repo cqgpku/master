@@ -17,6 +17,7 @@
 		<meta name="description" content="" />
 		<link rel="stylesheet" href="<%=path%>/css/reset.css">
 		<link rel="stylesheet" href="<%=path%>/css/style.css">
+		<script type="text/javascript" src="<%=path%>/js/jquery.js"></script>
 		<!-- <link rel="stylesheet" href="/css/reset.css">
 		<link rel="stylesheet" href="/css/style.css"> -->
 		<script>
