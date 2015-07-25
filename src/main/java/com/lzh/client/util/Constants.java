@@ -289,4 +289,6 @@ public class Constants {
 	public static final String cookie_phone = "cqg_phone";
 	public static final String cookie_tradepwd = "cqg_tradepwd";
 	public static final String cookie_username = "cqg_username";
+	public static final String cookie_sessionid = "server_session_id";
+
 }

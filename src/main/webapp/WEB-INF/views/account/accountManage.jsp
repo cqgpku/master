@@ -9,7 +9,7 @@
 <html>
 	<head>
 		<meta charset="utf-8" />
-		<meta name="viewport" content="initial-scale=1.0,maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,maximum-scale=1, user-scalable=no">
+		<meta name="viewport" content="initial-scale=0.5,maximum-scale=1.0,minimum-scale=0.5,user-scalable=0,width=device-width,maximum-scale=1, user-scalable=no">
 		<meta name="format-detection" content="telephone=no" />
 		<meta name="format-detection" content="email=no" />
 		<title>账户管理</title>
@@ -30,7 +30,7 @@
 		<div class="accountmanage_box left">
 		<img alt="#" src="img/undone.png">&nbsp;
 		<label>实名认证</label></div>
-		<div class="accountmanage_box right">
+		<div class="accountmanage_box right" onclick="renzhen();">
 		<label>${realname==""?"未认证":"已认证"}></label></div>
 		</div>
 		<div class="accountmanage_box">
@@ -58,4 +58,15 @@
 			</div>
 		
 	</body>
+	<script type="text/javascript">
+		function renzhen(){
+			var realname="${realname}";
+			if(realname==""){
+				window.location.href="rn_confirm/page";
+			}else{
+				return false;
+			}
+			
+		}
+	</script>
 </html>

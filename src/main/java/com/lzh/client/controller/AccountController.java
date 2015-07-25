@@ -5,6 +5,9 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
 import net.sf.json.JSONObject;
 
 import org.apache.commons.logging.Log;
@@ -166,21 +169,21 @@ public class AccountController extends BaseController{
 	@RequestMapping(value = "login/page")
 	public String login_page(Model model) {
 		String nop = this.getCookie(Constants.cookie_key);
-		if (!StringUtils.isBlank(nop)) {
+		/*if (!StringUtils.isBlank(nop)) {
 			nop = AESUtil.decrypt(nop);
 			if (!StringUtils.isBlank(nop)) {
 				model.addAttribute("phone" , nop);
 				model.addAttribute("rootdomain", rootdomain);
 				return "bid/test";
 			}
-		}
+		}*/
 		
 		model.addAttribute("rootdomain", rootdomain);
 		return "login";
 	}
 	
 	@RequestMapping(value="login")
-	public @ResponseBody Map<String, String> login( Model model ) {
+	public @ResponseBody Map<String, String> login(Model model ) {
 		String nicknameorphone = this.getParameter("nop");
 		String password = this.getParameter("pwd");
 		
@@ -199,16 +202,27 @@ public class AccountController extends BaseController{
 		params.put("apiLevel", Constants.apiLevel+"");
 		params.put("userName", nicknameorphone);
 		params.put("password", password);
+		//this.clearCookie(request, response, "/");
 		try {
+			//首先获取一次服务器端cookie并保存
+			this.servercookie = HttpUtil.httpPost_getcookie(Constants.loginurl, params);
+			
 			String http_result = HttpUtil.httpPost(Constants.loginurl, params);
+
+			//String http_result = http_result_obj.split("}")[0]+"}";
+
 			JSONObject jo = JSONObject.fromObject(http_result);
+
 			if ("100".equals(jo.get("result"))) {
 				result.put("code", "0");
 				result.put("mess", "登录成功！");
+		
 				this.setCookie(Constants.cookie_key, AESUtil.encrypt(nicknameorphone), Constants.EXP_ONEDAY);
 				this.setCookie(Constants.cookie_username, AESUtil.encrypt(jo.get("userName").toString()), Constants.EXP_ONEDAY);
 				this.setCookie(Constants.cookie_realstatus, AESUtil.encrypt(jo.get("real_status").toString()), Constants.EXP_ONEDAY);
 				this.setCookie(Constants.cookie_phone, AESUtil.encrypt(jo.get("phone").toString()), Constants.EXP_ONEDAY);
+			//	this.setCookie(Constants.cookie_sessionid,AESUtil.encrypt(http_result_obj.split("}")[1].replace("\n", "")), Constants.EXP_ONEDAY);
+			//	this.setCookie("JSESSIONID",http_result_obj.split("}")[1].replace("\n", ""), Constants.EXP_ONEDAY);
 				return result;
 			}else {
 				result.put("code", "1");
@@ -237,12 +251,16 @@ public class AccountController extends BaseController{
 	@RequestMapping(value = "myaccount/page")
 	public String myaccount_page(Model model) {
 		Map<String, String> result = new HashMap<String, String>();
+
 		Map<String, String> params = new HashMap<String, String>();
 		String http_result ="";
 		String name =this.getCookie(Constants.cookie_key);
-		
+	//	String aaa=AESUtil.decrypt(this.getCookie(Constants.cookie_sessionid));
+	//	System.out.println(aaa);
+	//	System.out.println(this.getCookie("JSESSIONID"));
+		params.put("apiLevel", Constants.apiLevel+"");
 		try {
-			http_result = HttpUtil.httpPost(Constants.investdetailurl, params);
+			http_result = HttpUtil.httpPost_check(Constants.userinfourl, params,this.servercookie);
 			JSONObject jo = JSONObject.fromObject(http_result);
 			if ("100".equals(jo.get("result"))) {
 				result.put("code", "100");
@@ -372,9 +390,9 @@ public class AccountController extends BaseController{
 	@RequestMapping(value = "accountmanage")
 	public String accountmanage_page(Model model) {
 		
-		String realname =this.getCookie(Constants.cookie_realname);
-		String bindemail =this.getCookie(Constants.cookie_email);
-		String bindphone =this.getCookie(Constants.cookie_phone);
+		String realname =this.getCookie(Constants.cookie_realname).toString()==""?"":AESUtil.decrypt(this.getCookie(Constants.cookie_realname));
+		String bindemail =this.getCookie(Constants.cookie_email).toString()==""?"":AESUtil.decrypt(this.getCookie(Constants.cookie_email));
+		String bindphone =this.getCookie(Constants.cookie_phone).toString()==""?"":AESUtil.decrypt(this.getCookie(Constants.cookie_phone));
 	
 		model.addAttribute("realname", realname);
 		model.addAttribute("bindemail", bindemail);

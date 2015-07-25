@@ -1,5 +1,11 @@
 package com.lzh.client.controller;
 
+import java.net.HttpCookie;
+import java.net.HttpURLConnection;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
+
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -21,7 +27,8 @@ public abstract class BaseController {
 	protected static String rootdomain ="http://test.cqg365.com:81/weixin";
 	private HttpServletRequest request;
 	private HttpServletResponse response;
-
+	HttpCookie servercookie =null;
+	
 	public HttpServletRequest getRequest() {
 		return request;
 	}
@@ -69,11 +76,32 @@ public abstract class BaseController {
 //			userCookie.setDomain(".58.com") ;
 //		}else {
 			//userCookie.setDomain(Setting.getSetting("cookiedomain")) ;
-			//userCookie.setDomain(".58v5.cn") ;
+		//	userCookie.setDomain(".58v5.cn") ;
 //		}
 		this.getResponse().addCookie(userCookie); 
 		return value;
 	}
+	
+	
+	protected void clearCookie(HttpServletRequest request,HttpServletResponse response, String path) {
+	      Cookie[] cookies = request.getCookies();
+	      try
+	      {
+	           for(int i=0;i<cookies.length;i++)  
+	           {
+	            //System.out.println(cookies[i].getName() + ":" + cookies[i].getValue());
+	            Cookie cookie = new Cookie(cookies[i].getName(), null);
+	            cookie.setMaxAge(0);
+	            cookie.setPath(path);//根据你创建cookie的路径进行填写    
+	            response.addCookie(cookie);
+	           }
+	      }catch(Exception ex)
+	      {
+	           System.out.println("清空Cookies发生异常！");
+	      } 
+	     
+	}
+	
 	
 	
 }

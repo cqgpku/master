@@ -9,8 +9,11 @@
 <!doctype html>
 <html>
 <head lang="en">
-    <meta charset="UTF-8">
-    <title>充值页面</title>
+    <meta charset="utf-8" />
+		<meta name="viewport" content="initial-scale=0.5,maximum-scale=1.0,minimum-scale=0.5,user-scalable=0,width=device-width,maximum-scale=1, user-scalable=no">
+		<meta name="format-detection" content="telephone=no" />
+		<meta name="format-detection" content="email=no" />
+		<title>充值页面</title>
     <link rel="stylesheet" href="<%=path%>/css/reset.css">
 		<link rel="stylesheet" href="<%=path%>/css/style.css">
     <script type="text/javascript" src="<%=path%>/js/jquery.js"></script>

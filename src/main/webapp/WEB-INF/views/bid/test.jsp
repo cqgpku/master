@@ -9,7 +9,7 @@
 <html>
 	<head>
 		<meta charset="utf-8" />
-		<meta name="viewport" content="initial-scale=1.0,maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,maximum-scale=1, user-scalable=no">
+		<meta name="viewport" content="initial-scale=0.5,maximum-scale=1.0,minimum-scale=0.5,user-scalable=0,width=device-width,maximum-scale=1, user-scalable=no">
 		<meta name="format-detection" content="telephone=no" />
 		<meta name="format-detection" content="email=no" />
 		<title>测试页面</title>
@@ -31,7 +31,7 @@
 		<div class="addbank_middle box left">
 		<label>注册：</label>
 		</div>
-		<div class="addbank_middle box right" style="color:#ff0000;cursor:pointer;" onclick="window.location.href='register/page';return false">
+		<div class="addbank_middle box right" style="color:#ff0000;cursor:pointer;" onclick="window.location.href='<%=basePath%>register/page';return false">
 		测试注册功能接口</div>
 		</div>
 		
@@ -39,7 +39,7 @@
 		<div class="addbank_middle box left">
 		<label>1首页：</label>
 		</div>
-		<div class="addbank_middle box right" style="color:#ff0000;cursor:pointer;" onclick="window.location.href='homepage';return false">
+		<div class="addbank_middle box right" style="color:#ff0000;cursor:pointer;" onclick="window.location.href='<%=basePath%>homepage';return false">
 		测试首页功能接口</div>
 		</div>
 		
@@ -47,7 +47,7 @@
 		<div class="addbank_middle box left">
 		<label>20我的账户：</label>
 		</div>
-		<div class="addbank_middle box right" style="color:#ff0000;cursor:pointer;" onclick="window.location.href='myaccount/page';return false">
+		<div class="addbank_middle box right" style="color:#ff0000;cursor:pointer;" onclick="window.location.href='<%=basePath%>myaccount/page';return false">
 		测试我的账户功能接口</div>
 		</div>
 		
@@ -55,7 +55,7 @@
 		<div class="addbank_middle box left">
 		<label>账户管理：</label>
 		</div>
-		<div class="addbank_middle box right" style="color:#ff0000;cursor:pointer;" onclick="window.location.href='accountmanage';return false">
+		<div class="addbank_middle box right" style="color:#ff0000;cursor:pointer;" onclick="window.location.href='<%=basePath%>accountmanage';return false">
 		测试账户管理功能接口</div>
 		</div>
 		
@@ -63,7 +63,7 @@
 		<div class="addbank_middle box left">
 		<label>账户修改：</label>
 		</div>
-		<div class="addbank_middle box right" style="color:#ff0000;cursor:pointer;" onclick="window.location.href='accountinfo';return false">
+		<div class="addbank_middle box right" style="color:#ff0000;cursor:pointer;" onclick="window.location.href='<%=basePath%>accountinfo';return false">
 		测试账户信息修改接口</div>
 		</div>
 		
@@ -71,7 +71,7 @@
 		<div class="addbank_middle box left">
 		<label>10绑定邮箱：</label>
 		</div>
-		<div class="addbank_middle box right" style="color:#ff0000;cursor:pointer;" onclick="window.location.href='accountinfo';return false">
+		<div class="addbank_middle box right" style="color:#ff0000;cursor:pointer;" onclick="window.location.href='<%=basePath%>accountinfo';return false">
 		测试绑定邮箱接口</div>
 		</div>
 		
@@ -87,7 +87,7 @@
 		<div class="addbank_middle box left">
 		<label>4标的详情：</label>
 		</div>
-		<div class="addbank_middle box right" style="color:#ff0000;cursor:pointer;" onclick="window.location.href='bidinfo/893';return false">
+		<div class="addbank_middle box right" style="color:#ff0000;cursor:pointer;" onclick="window.location.href='<%=basePath%>bidinfo/893';return false">
 		测试标的详情接口</div>
 		</div>
 		
@@ -95,7 +95,7 @@
 		<div class="addbank_middle box left">
 		<label>34代收详情：</label>
 		</div>
-		<div class="addbank_middle box right" style="color:#ff0000;cursor:pointer;" onclick="window.location.href='dsxq';return false">
+		<div class="addbank_middle box right" style="color:#ff0000;cursor:pointer;" onclick="window.location.href='<%=basePath%>dsxq';return false">
 		测试代收详情接口</div>
 		</div>
 		
@@ -103,7 +103,7 @@
 		<div class="addbank_middle box left">
 		<label>33交易记录：</label>
 		</div>
-		<div class="addbank_middle box right" style="color:#ff0000;cursor:pointer;" onclick="window.location.href='dealinfo';return false">
+		<div class="addbank_middle box right" style="color:#ff0000;cursor:pointer;" onclick="window.location.href='<%=basePath%>dealinfo';return false">
 		测试交易记录接口</div>
 		</div>
 		
@@ -111,7 +111,7 @@
 		<div class="addbank_middle box left">
 		<label>35大客户：</label>
 		</div>
-		<div class="addbank_middle box right" style="color:#ff0000;cursor:pointer;" onclick="window.location.href='targetcustomer/1';return false">
+		<div class="addbank_middle box right" style="color:#ff0000;cursor:pointer;" onclick="window.location.href='<%=basePath%>targetcustomer/1';return false">
 		测试大客户信息接口</div>
 		</div>
 		
@@ -119,7 +119,7 @@
 		<div class="addbank_middle box left">
 		<label>37投资列表：</label>
 		</div>
-		<div class="addbank_middle box right" style="color:#ff0000;cursor:pointer;" onclick="window.location.href='invests';return false">
+		<div class="addbank_middle box right" style="color:#ff0000;cursor:pointer;" onclick="window.location.href='<%=basePath%>invests';return false">
 		测试投资列表接口</div>
 		</div>
 		
@@ -127,7 +127,7 @@
 		<div class="addbank_middle box left">
 		<label>27银行卡列表：</label>
 		</div>
-		<div class="addbank_middle box right" style="color:#ff0000;cursor:pointer;" onclick="window.location.href='bankcards';return false">
+		<div class="addbank_middle box right" style="color:#ff0000;cursor:pointer;" onclick="window.location.href='<%=basePath%>bankcards';return false">
 		测试银行卡列表接口</div>
 		</div>
 		
@@ -135,7 +135,7 @@
 		<div class="addbank_middle box left">
 		<label>21添加银行卡：</label>
 		</div>
-		<div class="addbank_middle box right" style="color:#ff0000;cursor:pointer;" onclick="window.location.href='addbankcard';return false">
+		<div class="addbank_middle box right" style="color:#ff0000;cursor:pointer;" onclick="window.location.href='<%=basePath%>addbankcard';return false">
 		测试添加银行卡接口</div>
 		</div>
 		
@@ -143,7 +143,7 @@
 		<div class="addbank_middle box left">
 		<label>充值页面：</label>
 		</div>
-		<div class="addbank_middle box right" style="color:#ff0000;cursor:pointer;" onclick="window.location.href='recharge';return false">
+		<div class="addbank_middle box right" style="color:#ff0000;cursor:pointer;" onclick="window.location.href='<%=basePath%>recharge';return false">
 		测试充值接口</div>
 		</div>
 		
