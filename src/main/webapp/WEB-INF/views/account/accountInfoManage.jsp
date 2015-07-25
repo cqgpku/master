@@ -18,6 +18,9 @@
 		<link rel="stylesheet" href="<%=path%>/css/reset.css">
 		<link rel="stylesheet" href="<%=path%>/css/style.css">
 		<script type="text/javascript" src="<%=path%>/js/jquery.js"></script>
+
+    <script type="text/javascript" src="<%=path%>/js/zepto.js"></script>
+		<script type="text/javascript" src="<%=path%>/js/integra.js"></script>
 		<!-- <link rel="stylesheet" href="/css/reset.css">
 		<link rel="stylesheet" href="/css/style.css"> -->
 		<script>
@@ -33,27 +36,45 @@
 		<label>头像</label>
 		</div>
 		<div class="accountinfo_middle box right">
-		<img alt="#" src="img/logo.png"></div>
+		<img alt="#" src="http://${userimg}"></div>
 		</div>
 		
 		<div class="accountinfo_middle box">
 		<div class="accountinfo_middle box left">
 		<label>账户名</label>
 		</div>
-		<div class="accountinfo_middle box right">188****0207</div>
+		<div class="accountinfo_middle box right">${bindphone}</div>
 		</div>
 		
 		<div class="accountinfo_middle box">
 		<div class="accountinfo_middle box left">
 		<label>昵称</label>
 		</div>
-		<div class="accountinfo_middle box right">Tina</div>
+		<div class="accountinfo_middle box right">${username}</div>
 		</div>
 		
 		</div>
 		
-		<div class="accountinfo_bottom">退出账户
+		<div class="accountinfo_bottom" onclick="quit();">退出账户
 		</div>
 		
 	</body>
+	<script>
+	function quit(){
+		$.post(rooturl + "/logout" , {} , function(resp){
+			if(typeof(resp) != "object"){
+				resp = JSON.parse(resp);
+			}
+			$.toast(resp.mess , 2000);
+			if(resp.code == 0){
+				setTimeout(function(){
+					window.location.reload();
+				},1000);
+			}
+			
+			})
+
+
+	}
+</script>
 </html>

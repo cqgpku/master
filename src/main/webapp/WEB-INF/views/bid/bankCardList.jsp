@@ -18,6 +18,8 @@
     <link rel="stylesheet" href="<%=path%>/css/reset.css">
 		<link rel="stylesheet" href="<%=path%>/css/style.css">
     <script type="text/javascript" src="<%=path%>/js/jquery.js"></script>
+    <script type="text/javascript" src="<%=path%>/js/zepto.js"></script>
+		<script type="text/javascript" src="<%=path%>/js/integra.js"></script>
     <script>
 			var rooturl = "<%=basePath%>";
 		</script>
@@ -26,7 +28,7 @@
 <div class="bankcard_top">
 		<label style="float:left;margin-left:15px;"><</label>
 		<label style="float: center;">银行卡</label>
-		<label style="float:right;margin-right:15px;">+</label>
+		<label style="float:right;margin-right:15px;"><span onclick="addbank();">+</span></label>
 </div>
 <div class="bankcard_middle">
 <div class="bankcard_middle_box">
@@ -59,6 +61,10 @@
 	
 	function deletebank(obj){
 		alert("删除"+obj.id);
+	}
+	
+	function addbank(){
+		window.location.href=rooturl + "/addbankcard";
 	}
 </script>
 </html>

@@ -141,7 +141,7 @@
 	//	var info1="{status=7, code=100, mess=请求成功！, repayment_time=2015-08-22, returnType=按月付息到期还本, remainNum=0, totalNum=300000, title=信用标, rate=11, termType=0, valid_time=691200, term=3, investId=893, guaranteeCompany=湖南中御投资担保有限公司}";
 	var info="${info.title}";
 
-	//init();
+	init();
 	
 	function init(){
 		$("#title").html("${info.title}");

@@ -111,6 +111,7 @@ function time(o) {
 			if(resp.code == 0){
 				setTimeout(function(){
 					$('.btn_refist').text("注册成功");
+					window.location.href=rooturl+"/login/page";
 				},1000);
 			}
 		});

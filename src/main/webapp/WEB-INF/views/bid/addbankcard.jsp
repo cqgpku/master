@@ -18,6 +18,8 @@
 		<link rel="stylesheet" href="<%=path%>/css/reset.css">
 		<link rel="stylesheet" href="<%=path%>/css/style.css">
 		<script type="text/javascript" src="<%=path%>/js/jquery.js"></script>
+		<script type="text/javascript" src="<%=path%>/js/zepto.js"></script>
+		<script type="text/javascript" src="<%=path%>/js/integra.js"></script>
 		<!-- <link rel="stylesheet" href="/css/reset.css">
 		<link rel="stylesheet" href="/css/style.css"> -->
 		<script>
@@ -40,14 +42,14 @@
 		<div class="addbank_middle box left">
 		<label>真实姓名：</label>
 		</div>
-		<div class="addbank_middle box right">*婷</div>
+		<div class="addbank_middle box right">${realname}</div>
 		</div>
 		
 		<div class="addbank_middle box">
 		<div class="addbank_middle box left">
 		<label>身份证号：</label>
 		</div>
-		<div class="addbank_middle box right">138392220*********</div>
+		<div class="addbank_middle box right">${cardid}</div>
 		</div>
 		
 		<div class="addbank_middle box">
@@ -99,4 +101,19 @@
 		</div>
 		
 	</body>
+		<script>
+		getbanks();
+	function getbanks(){
+		$.post(rooturl + "/getbanks" , {} , function(resp){
+			if(typeof(resp) != "object"){
+				resp = JSON.parse(resp);
+			}
+			//$.toast(resp.mess , 2000);
+			if(resp.code == 0){
+				//加载银行信息
+			}
+			
+			})
+	}
+</script>
 </html>

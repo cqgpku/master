@@ -38,17 +38,17 @@
 		</div>
 		<div class="account_top_middle_label">
 		<label style="width:150px;height:30px;font-size:14px;">累计收益(元)</label><br>
-		<label id="accumulatedIncome" style="width:200px;height:80px;font-size:18px;">100,250.00</label>
+		<label id="accumulatedIncome" style="width:200px;height:80px;font-size:18px;">--</label>
 		</div>
 		</div>
 		<div class="account_top bottom">
 				<div class="account_top_bottom_label">
 		<label style="width:150px;height:20px;font-size:14px;">可用金额(元)</label><br>
-		<label id="availableAmount" style="width:200px;height:40px;font-size:18px;">100.00</label>
+		<label id="availableAmount" style="width:200px;height:40px;font-size:18px;">--</label>
 		</div>
 		<div class="account_top_bottom_label">
 		<label style="width:150px;height:20px;font-size:14px;">账户总额(元)</label><br>
-		<label id="accountTotalAmount" style="width:200px;height:40px;font-size:18px;">100,2500.00</label>
+		<label id="accountTotalAmount" style="width:200px;height:40px;font-size:18px;">--</label>
 		</div>
 		
 		</div>
@@ -101,7 +101,14 @@
 		
 	</body>
 	<script>
+	var info="${info.accumulatedIncome}";
+ init();
 	
+	function init(){
+		$("#accumulatedIncome").html("${info.accumulatedIncome}");
+		$("#availableAmount").html("${info.availableAmount}");
+		$("#accountTotalAmount").html("${info.accountTotalAmount}");
+	} 
 	
 	</script>
 </html>

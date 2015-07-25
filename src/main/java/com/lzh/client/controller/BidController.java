@@ -1,9 +1,14 @@
 package com.lzh.client.controller;
 
+import java.io.IOException;
+import java.io.PrintWriter;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
 import net.sf.json.JSONObject;
 
@@ -16,9 +21,11 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.lzh.client.util.AESUtil;
 import com.lzh.client.util.Constants;
 import com.lzh.client.util.HttpUtil;
 import com.lzh.client.util.PhoneUtil;
+import com.lzh.client.viewmodel.HeadImgVo;
 
 /*
  * 标的相关controller
@@ -125,7 +132,11 @@ private static final Log log = LogFactory.getLog(AccountController.class);
 	*/
 	@RequestMapping(value = "addbankcard", method = RequestMethod.GET)
 	public String addbankcard_page(HttpServletRequest request, Model model) {
+		String realname =this.getCookie(Constants.cookie_realname).toString()==""?"":AESUtil.decrypt(this.getCookie(Constants.cookie_realname));
+		String cardid =this.getCookie(Constants.cookie_cardid).toString()==""?"":AESUtil.decrypt(this.getCookie(Constants.cookie_cardid));
 		
+		model.addAttribute("realname", realname);
+		model.addAttribute("cardid", cardid);
 		return "bid/addbankcard";
 	}
 	
@@ -173,4 +184,35 @@ private static final Log log = LogFactory.getLog(AccountController.class);
 		}
 	}
 		
+	
+	/*
+	 * 获得一级银行信息
+	 */
+	@RequestMapping(value = "getbanks")
+	public void getbanks_page(HttpServletResponse response, HttpServletRequest request) throws IOException {
+		Map<String, String> params = new HashMap<String, String>();
+		String http_result ="";
+		params.put("apiLevel", Constants.apiLevel+"");
+		List<HeadImgVo> imgs=new ArrayList<HeadImgVo>();
+		try {
+			http_result = HttpUtil.httpPost(Constants.getbankdataurl, params);
+			JSONObject jo = JSONObject.fromObject(http_result);
+			if ("100".equals(jo.get("result"))) {
+				log.info("code:100,message:银行请求成功");
+				
+			}else {
+				log.info("code:"+jo.get("result").toString()+",message:银行请求失败，错误信息"+jo.getString("resultDesc"));
+			
+			}
+		} catch (Exception e) {
+			log.info("请求银行信息接口失败，发生异常,error:"+e.getMessage());
+			
+		}
+		 response.setContentType("text/html; charset=UTF-8");
+         PrintWriter out = response.getWriter();
+         out.print(http_result);
+         out.flush();
+         out.close();
+	}
+	
 }

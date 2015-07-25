@@ -130,19 +130,6 @@ public class HttpUtil {
 		// 尝试发送请求
 		try {
 			
-				/*TestConnect tc = new TestConnect();
-				
-				try {
-					uri = new URI("http://pay.cqg365.com/p2p/app/");
-				} catch (URISyntaxException e) {
-					
-					e.printStackTrace();
-				}
-				MyCookiesDemo.storecoo(uri, tc.test());
-				HttpCookie hcoo = MyCookiesDemo.getcookies();*/
-				
-				
-			
 			u = new URL(url);
 			con = (HttpURLConnection) u.openConnection();
 			con.setRequestMethod("POST");
@@ -177,7 +164,6 @@ public class HttpUtil {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-	//	sessionid=con.getHeaderFields().get("Set-Cookie").get(0).split(";")[0].split("=")[1];
 		return buffer.toString();
 	}
 	

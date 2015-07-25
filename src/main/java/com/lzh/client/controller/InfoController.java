@@ -118,6 +118,7 @@ private static final Log log = LogFactory.getLog(InfoController.class);
 			if ("100".equals(jo.get("result"))) {
 				result.put("code", "0");
 				result.put("mess", "认证成功！");
+				this.setCookie(Constants.cookie_realname, AESUtil.encrypt(realname), Constants.EXP_ONEDAY);
 				
 				return result;
 			}else {

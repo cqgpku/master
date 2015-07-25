@@ -169,14 +169,14 @@ public class AccountController extends BaseController{
 	@RequestMapping(value = "login/page")
 	public String login_page(Model model) {
 		String nop = this.getCookie(Constants.cookie_key);
-		/*if (!StringUtils.isBlank(nop)) {
+		if (!StringUtils.isBlank(nop)) {
 			nop = AESUtil.decrypt(nop);
 			if (!StringUtils.isBlank(nop)) {
 				model.addAttribute("phone" , nop);
 				model.addAttribute("rootdomain", rootdomain);
 				return "bid/test";
 			}
-		}*/
+		}
 		
 		model.addAttribute("rootdomain", rootdomain);
 		return "login";
@@ -202,15 +202,11 @@ public class AccountController extends BaseController{
 		params.put("apiLevel", Constants.apiLevel+"");
 		params.put("userName", nicknameorphone);
 		params.put("password", password);
-		//this.clearCookie(request, response, "/");
 		try {
 			//首先获取一次服务器端cookie并保存
 			this.servercookie = HttpUtil.httpPost_getcookie(Constants.loginurl, params);
 			
 			String http_result = HttpUtil.httpPost(Constants.loginurl, params);
-
-			//String http_result = http_result_obj.split("}")[0]+"}";
-
 			JSONObject jo = JSONObject.fromObject(http_result);
 
 			if ("100".equals(jo.get("result"))) {
@@ -221,8 +217,15 @@ public class AccountController extends BaseController{
 				this.setCookie(Constants.cookie_username, AESUtil.encrypt(jo.get("userName").toString()), Constants.EXP_ONEDAY);
 				this.setCookie(Constants.cookie_realstatus, AESUtil.encrypt(jo.get("real_status").toString()), Constants.EXP_ONEDAY);
 				this.setCookie(Constants.cookie_phone, AESUtil.encrypt(jo.get("phone").toString()), Constants.EXP_ONEDAY);
-			//	this.setCookie(Constants.cookie_sessionid,AESUtil.encrypt(http_result_obj.split("}")[1].replace("\n", "")), Constants.EXP_ONEDAY);
-			//	this.setCookie("JSESSIONID",http_result_obj.split("}")[1].replace("\n", ""), Constants.EXP_ONEDAY);
+				this.setCookie(Constants.cookie_img, AESUtil.encrypt(jo.get("image").toString()), Constants.EXP_ONEDAY);
+				if(jo.get("card_id")!=""&&jo.get("card_id")!=null){
+					this.setCookie(Constants.cookie_cardid, AESUtil.encrypt(jo.get("card_id").toString()), Constants.EXP_ONEDAY);
+				}
+				if(jo.get("realname")!=""&&jo.get("realname")!=null){
+					this.setCookie(Constants.cookie_realname, AESUtil.encrypt(jo.get("realname").toString()), Constants.EXP_ONEDAY);
+				}
+				String userid =jo.get("image").toString().split("&")[0].split("=")[1];
+				this.setCookie(Constants.cookie_userid, AESUtil.encrypt(userid), Constants.EXP_ONEDAY);
 				return result;
 			}else {
 				result.put("code", "1");
@@ -239,10 +242,52 @@ public class AccountController extends BaseController{
 	
 	@RequestMapping(value="logout")
 	public @ResponseBody Map<String, String> loginout( Model model ) {
-		this.setCookie(Constants.cookie_key, "", 1);
-		Map<String, String> map = new HashMap<String, String>();
-		map.put("code", "0");
-		return map;
+		
+		//请求登出接口
+		Map<String, String> result = new HashMap<String, String>();
+		result.put("code", "1");
+		Map<String, String> params = new HashMap<String, String>();
+		params.put("apiLevel", Constants.apiLevel+"");
+		try {
+			if(this.servercookie==null){
+				//本地存储的服务器相关cookie不存在，则同步清除本地cookie
+				//清除本地cookie
+				this.setCookie(Constants.cookie_key, "", 1);
+				this.setCookie(Constants.cookie_username, "", 1);
+				this.setCookie(Constants.cookie_realstatus, "", 1);
+				this.setCookie(Constants.cookie_phone, "", 1);
+				this.setCookie(Constants.cookie_img, "", 1);
+				this.setCookie(Constants.cookie_cardid, "", 1);
+				this.setCookie(Constants.cookie_realname, "", 1);
+				this.setCookie(Constants.cookie_userid, "", 1);
+			}
+			String http_result = HttpUtil.httpPost_check(Constants.loginouturl, params,this.servercookie);
+			JSONObject jo = JSONObject.fromObject(http_result);
+
+			if ("100".equals(jo.get("result"))) {
+				result.put("code", "0");
+				result.put("mess", "登出成功！");
+				//清除本地cookie
+				this.setCookie(Constants.cookie_key, "", 1);
+				this.setCookie(Constants.cookie_username, "", 1);
+				this.setCookie(Constants.cookie_realstatus, "", 1);
+				this.setCookie(Constants.cookie_phone, "", 1);
+				this.setCookie(Constants.cookie_img, "", 1);
+				this.setCookie(Constants.cookie_cardid, "", 1);
+				this.setCookie(Constants.cookie_realname, "", 1);
+				this.setCookie(Constants.cookie_userid, "", 1);
+				return result;
+			}else {
+				result.put("code", "1");
+				result.put("mess", "登出失败！");
+				return result;
+			}
+		} catch (Exception e) {
+			log.info("请求登出接口失败,error:"+e.getMessage());
+			result.put("mess", "登出失败！");
+			return result;
+		}
+		
 	}
 	
 	/*
@@ -254,10 +299,7 @@ public class AccountController extends BaseController{
 
 		Map<String, String> params = new HashMap<String, String>();
 		String http_result ="";
-		String name =this.getCookie(Constants.cookie_key);
-	//	String aaa=AESUtil.decrypt(this.getCookie(Constants.cookie_sessionid));
-	//	System.out.println(aaa);
-	//	System.out.println(this.getCookie("JSESSIONID"));
+		
 		params.put("apiLevel", Constants.apiLevel+"");
 		try {
 			http_result = HttpUtil.httpPost_check(Constants.userinfourl, params,this.servercookie);
@@ -265,18 +307,22 @@ public class AccountController extends BaseController{
 			if ("100".equals(jo.get("result"))) {
 				result.put("code", "100");
 				result.put("mess", "请求成功！");
-				
+				result.put("accountTotalAmount", jo.getString("accountTotalAmount"));
+				result.put("accumulatedIncome", jo.getString("accumulatedIncome"));
+				result.put("availableAmount", jo.getString("availableAmount"));
 			}else {
 				result.put("code", jo.get("result").toString());
 				result.put("mess", jo.getString("resultDesc"));
-			
+				result.put("accountTotalAmount", "--");
+				result.put("accumulatedIncome", "--");
+				result.put("availableAmount", "--");
 			}
 		} catch (Exception e) {
 			log.info("请求我的账户信息接口失败,error:"+e.getMessage());
 			result.put("mess", "请求失败");
 			
 		}
-		model.addAttribute("info", http_result);
+		model.addAttribute("info", result);
 		return "account/myAccount";
 	}
 	
@@ -405,7 +451,13 @@ public class AccountController extends BaseController{
 	 */
 	@RequestMapping(value = "accountinfo")
 	public String accountinfo_page(Model model) {
-		model.addAttribute("rootdomain", rootdomain);
+		String username =this.getCookie(Constants.cookie_username).toString()==""?"":AESUtil.decrypt(this.getCookie(Constants.cookie_username));
+		String userimg =this.getCookie(Constants.cookie_img).toString()==""?"":AESUtil.decrypt(this.getCookie(Constants.cookie_img));
+		String bindphone =this.getCookie(Constants.cookie_phone).toString()==""?"":AESUtil.decrypt(this.getCookie(Constants.cookie_phone));
+	
+		model.addAttribute("username", username);
+		model.addAttribute("userimg", userimg);
+		model.addAttribute("bindphone", bindphone);
 		return "account/accountInfoManage";
 	}
 	
