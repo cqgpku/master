@@ -1,10 +1,13 @@
 package com.lzh.client.controller;
 
+import java.io.IOException;
+import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
@@ -14,7 +17,9 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.lzh.client.util.AESUtil;
@@ -167,14 +172,27 @@ public class AccountController extends BaseController{
 	
 	
 	@RequestMapping(value = "login/page")
-	public String login_page(Model model) {
+	public String login_page(Model model,HttpServletRequest request,HttpServletResponse response) throws IOException {
+		
+		if(this.servercookie==null){
+			//清除本地cookie
+			this.setCookie(Constants.cookie_key, "", 1);
+			this.setCookie(Constants.cookie_username, "", 1);
+			this.setCookie(Constants.cookie_realstatus, "", 1);
+			this.setCookie(Constants.cookie_phone, "", 1);
+			this.setCookie(Constants.cookie_img, "", 1);
+			this.setCookie(Constants.cookie_cardid, "", 1);
+			this.setCookie(Constants.cookie_realname, "", 1);
+			this.setCookie(Constants.cookie_userid, "", 1);
+		}
 		String nop = this.getCookie(Constants.cookie_key);
 		if (!StringUtils.isBlank(nop)) {
 			nop = AESUtil.decrypt(nop);
 			if (!StringUtils.isBlank(nop)) {
 				model.addAttribute("phone" , nop);
 				model.addAttribute("rootdomain", rootdomain);
-				return "bid/test";
+				response.sendRedirect(Constants.locationUrl);
+				//return "account/myAccount";
 			}
 		}
 		
@@ -202,10 +220,12 @@ public class AccountController extends BaseController{
 		params.put("apiLevel", Constants.apiLevel+"");
 		params.put("userName", nicknameorphone);
 		params.put("password", password);
+		
 		try {
 			//首先获取一次服务器端cookie并保存
-			this.servercookie = HttpUtil.httpPost_getcookie(Constants.loginurl, params);
-			
+			if(this.servercookie==null||this.servercookie.getValue().length()==0)
+				this.servercookie = HttpUtil.httpPost_getcookie(Constants.loginurl, params);
+			super.servercookie=this.servercookie;
 			String http_result = HttpUtil.httpPost(Constants.loginurl, params);
 			JSONObject jo = JSONObject.fromObject(http_result);
 
@@ -213,19 +233,19 @@ public class AccountController extends BaseController{
 				result.put("code", "0");
 				result.put("mess", "登录成功！");
 		
-				this.setCookie(Constants.cookie_key, AESUtil.encrypt(nicknameorphone), Constants.EXP_ONEDAY);
-				this.setCookie(Constants.cookie_username, AESUtil.encrypt(jo.get("userName").toString()), Constants.EXP_ONEDAY);
-				this.setCookie(Constants.cookie_realstatus, AESUtil.encrypt(jo.get("real_status").toString()), Constants.EXP_ONEDAY);
-				this.setCookie(Constants.cookie_phone, AESUtil.encrypt(jo.get("phone").toString()), Constants.EXP_ONEDAY);
-				this.setCookie(Constants.cookie_img, AESUtil.encrypt(jo.get("image").toString()), Constants.EXP_ONEDAY);
+				this.setCookie(Constants.cookie_key, AESUtil.encrypt(nicknameorphone), Constants.EXP_HALFHOUR);
+				this.setCookie(Constants.cookie_username, AESUtil.encrypt(jo.get("userName").toString()), Constants.EXP_HALFHOUR);
+				this.setCookie(Constants.cookie_realstatus, AESUtil.encrypt(jo.get("real_status").toString()), Constants.EXP_HALFHOUR);
+				this.setCookie(Constants.cookie_phone, AESUtil.encrypt(jo.get("phone").toString()), Constants.EXP_HALFHOUR);
+				this.setCookie(Constants.cookie_img, AESUtil.encrypt(jo.get("image").toString()), Constants.EXP_HALFHOUR);
 				if(jo.get("card_id")!=""&&jo.get("card_id")!=null){
-					this.setCookie(Constants.cookie_cardid, AESUtil.encrypt(jo.get("card_id").toString()), Constants.EXP_ONEDAY);
+					this.setCookie(Constants.cookie_cardid, AESUtil.encrypt(jo.get("card_id").toString()), Constants.EXP_HALFHOUR);
 				}
 				if(jo.get("realname")!=""&&jo.get("realname")!=null){
-					this.setCookie(Constants.cookie_realname, AESUtil.encrypt(jo.get("realname").toString()), Constants.EXP_ONEDAY);
+					this.setCookie(Constants.cookie_realname, AESUtil.encrypt(jo.get("realname").toString()), Constants.EXP_HALFHOUR);
 				}
 				String userid =jo.get("image").toString().split("&")[0].split("=")[1];
-				this.setCookie(Constants.cookie_userid, AESUtil.encrypt(userid), Constants.EXP_ONEDAY);
+				this.setCookie(Constants.cookie_userid, AESUtil.encrypt(userid), Constants.EXP_HALFHOUR);
 				return result;
 			}else {
 				result.put("code", "1");
@@ -248,6 +268,7 @@ public class AccountController extends BaseController{
 		result.put("code", "1");
 		Map<String, String> params = new HashMap<String, String>();
 		params.put("apiLevel", Constants.apiLevel+"");
+		
 		try {
 			if(this.servercookie==null){
 				//本地存储的服务器相关cookie不存在，则同步清除本地cookie
@@ -276,6 +297,7 @@ public class AccountController extends BaseController{
 				this.setCookie(Constants.cookie_cardid, "", 1);
 				this.setCookie(Constants.cookie_realname, "", 1);
 				this.setCookie(Constants.cookie_userid, "", 1);
+				this.servercookie=null;
 				return result;
 			}else {
 				result.put("code", "1");
@@ -302,6 +324,20 @@ public class AccountController extends BaseController{
 		
 		params.put("apiLevel", Constants.apiLevel+"");
 		try {
+			if(this.servercookie==null){
+				//本地存储的服务器相关cookie不存在，则同步清除本地cookie
+				//清除本地cookie
+				this.setCookie(Constants.cookie_key, "", 1);
+				this.setCookie(Constants.cookie_username, "", 1);
+				this.setCookie(Constants.cookie_realstatus, "", 1);
+				this.setCookie(Constants.cookie_phone, "", 1);
+				this.setCookie(Constants.cookie_img, "", 1);
+				this.setCookie(Constants.cookie_cardid, "", 1);
+				this.setCookie(Constants.cookie_realname, "", 1);
+				this.setCookie(Constants.cookie_userid, "", 1);
+				return "login";
+			}
+			
 			http_result = HttpUtil.httpPost_check(Constants.userinfourl, params,this.servercookie);
 			JSONObject jo = JSONObject.fromObject(http_result);
 			if ("100".equals(jo.get("result"))) {
@@ -322,6 +358,11 @@ public class AccountController extends BaseController{
 			result.put("mess", "请求失败");
 			
 		}
+		String userimg =this.getCookie(Constants.cookie_img).toString()==""?"":AESUtil.decrypt(this.getCookie(Constants.cookie_img));
+		String username =this.getCookie(Constants.cookie_username).toString()==""?"":AESUtil.decrypt(this.getCookie(Constants.cookie_username));
+
+		model.addAttribute("userimg", userimg);
+		model.addAttribute("username", username);
 		model.addAttribute("info", result);
 		return "account/myAccount";
 	}
@@ -332,13 +373,35 @@ public class AccountController extends BaseController{
 	@RequestMapping(value = "dsxq")
 	public String moneyCollection_page(Model model) {
 		Map<String, String> params = new HashMap<String, String>();
+		Map<String, String> result = new HashMap<String, String>();
 		String http_result ="";
 		String username =this.getCookie(Constants.cookie_key);
 		params.put("apiLevel", Constants.apiLevel+"");
 		try {
-			http_result = HttpUtil.httpPost(Constants.getcollectdetailsurl, params);
+			if(this.servercookie==null){
+				//本地存储的服务器相关cookie不存在，则同步清除本地cookie
+				//清除本地cookie
+				this.setCookie(Constants.cookie_key, "", 1);
+				this.setCookie(Constants.cookie_username, "", 1);
+				this.setCookie(Constants.cookie_realstatus, "", 1);
+				this.setCookie(Constants.cookie_phone, "", 1);
+				this.setCookie(Constants.cookie_img, "", 1);
+				this.setCookie(Constants.cookie_cardid, "", 1);
+				this.setCookie(Constants.cookie_realname, "", 1);
+				this.setCookie(Constants.cookie_userid, "", 1);
+				return "login";
+			}
+			
+			http_result = HttpUtil.httpPost_check(Constants.getcollectdetailsurl, params,this.servercookie);
 			JSONObject jo = JSONObject.fromObject(http_result);
 			if ("100".equals(jo.get("result"))) {
+				result.put("code", "100");
+				result.put("mess", "请求成功！");
+				result.put("interest", jo.getString("interest"));
+				result.put("recent7Amount", jo.getString("recent7Amount"));
+				result.put("recent7Interest", jo.getString("recent7Interest"));
+				result.put("recentDate", jo.getString("recentDate"));
+				result.put("sum", jo.getString("sum"));
 				log.info("code:100,message:代收详情接口请求成功");
 				
 			}else {
@@ -349,7 +412,7 @@ public class AccountController extends BaseController{
 			log.info("请求代收详情信息接口失败，发生异常,error:"+e.getMessage());
 			
 		}
-		model.addAttribute("info", http_result);
+		model.addAttribute("info", result);
 		return "account/moneyCollectionInfo";
 	}
 	
@@ -371,6 +434,9 @@ public class AccountController extends BaseController{
 		return "other/about";
 	}
 	
+	
+	
+	
 	/*
 	 * 交易记录
 	 */
@@ -384,7 +450,21 @@ public class AccountController extends BaseController{
 		params.put("pageSize", "5");
 		List<TradeRecord> records=new ArrayList<TradeRecord>();
 		try {
-			http_result = HttpUtil.httpPost(Constants.traderecordlisturl, params);
+			if(this.servercookie==null){
+				//本地存储的服务器相关cookie不存在，则同步清除本地cookie
+				//清除本地cookie
+				this.setCookie(Constants.cookie_key, "", 1);
+				this.setCookie(Constants.cookie_username, "", 1);
+				this.setCookie(Constants.cookie_realstatus, "", 1);
+				this.setCookie(Constants.cookie_phone, "", 1);
+				this.setCookie(Constants.cookie_img, "", 1);
+				this.setCookie(Constants.cookie_cardid, "", 1);
+				this.setCookie(Constants.cookie_realname, "", 1);
+				this.setCookie(Constants.cookie_userid, "", 1);
+				return "login";
+			}
+			
+			http_result = HttpUtil.httpPost_check(Constants.traderecordlisturl, params,this.servercookie);
 			JSONObject jo = JSONObject.fromObject(http_result);
 			if ("100".equals(jo.get("result"))) {
 				log.info("code:100,message:交易记录接口请求成功");
@@ -435,6 +515,19 @@ public class AccountController extends BaseController{
 	 */
 	@RequestMapping(value = "accountmanage")
 	public String accountmanage_page(Model model) {
+		if(this.servercookie==null){
+			//本地存储的服务器相关cookie不存在，则同步清除本地cookie
+			//清除本地cookie
+			this.setCookie(Constants.cookie_key, "", 1);
+			this.setCookie(Constants.cookie_username, "", 1);
+			this.setCookie(Constants.cookie_realstatus, "", 1);
+			this.setCookie(Constants.cookie_phone, "", 1);
+			this.setCookie(Constants.cookie_img, "", 1);
+			this.setCookie(Constants.cookie_cardid, "", 1);
+			this.setCookie(Constants.cookie_realname, "", 1);
+			this.setCookie(Constants.cookie_userid, "", 1);
+			return "login";
+		}
 		
 		String realname =this.getCookie(Constants.cookie_realname).toString()==""?"":AESUtil.decrypt(this.getCookie(Constants.cookie_realname));
 		String bindemail =this.getCookie(Constants.cookie_email).toString()==""?"":AESUtil.decrypt(this.getCookie(Constants.cookie_email));
@@ -451,6 +544,20 @@ public class AccountController extends BaseController{
 	 */
 	@RequestMapping(value = "accountinfo")
 	public String accountinfo_page(Model model) {
+		if(this.servercookie==null){
+			//本地存储的服务器相关cookie不存在，则同步清除本地cookie
+			//清除本地cookie
+			this.setCookie(Constants.cookie_key, "", 1);
+			this.setCookie(Constants.cookie_username, "", 1);
+			this.setCookie(Constants.cookie_realstatus, "", 1);
+			this.setCookie(Constants.cookie_phone, "", 1);
+			this.setCookie(Constants.cookie_img, "", 1);
+			this.setCookie(Constants.cookie_cardid, "", 1);
+			this.setCookie(Constants.cookie_realname, "", 1);
+			this.setCookie(Constants.cookie_userid, "", 1);
+			return "login";
+		}
+		
 		String username =this.getCookie(Constants.cookie_username).toString()==""?"":AESUtil.decrypt(this.getCookie(Constants.cookie_username));
 		String userimg =this.getCookie(Constants.cookie_img).toString()==""?"":AESUtil.decrypt(this.getCookie(Constants.cookie_img));
 		String bindphone =this.getCookie(Constants.cookie_phone).toString()==""?"":AESUtil.decrypt(this.getCookie(Constants.cookie_phone));
@@ -471,4 +578,579 @@ public class AccountController extends BaseController{
 		return "account/bind_email";
 	}
 	
+	/*
+	 * 显示某一个标的的详情页面
+	 */
+		@RequestMapping(value = "bidinfo/{id}", method = RequestMethod.GET)
+		public String bidinfo_page(HttpServletRequest request, Model model,
+				@PathVariable("id") String id) {
+			Map<String, String> result = new HashMap<String, String>();
+			Map<String, String> params = new HashMap<String, String>();
+			params.put("apiLevel", Constants.apiLevel + "");
+			params.put("investId", id);
+			String http_record_result="";
+			try {
+				//得到投标详情信息
+				String http_result = HttpUtil.httpPost(Constants.investdetailurl, params);
+				JSONObject jo = JSONObject.fromObject(http_result);
+				if ("100".equals(jo.get("result"))) {
+					result.put("code", "100");
+					result.put("mess", "请求成功！");
+					result.put("investId", jo.getString("investId"));
+					result.put("status", jo.getString("status"));
+					result.put("title", jo.getString("title"));
+					//result.put("last_time", jo.getString("last_time"));
+					//result.put("buylimit", jo.getString("buylimit"));
+					result.put("repayment_time", jo.getString("repayment_time"));
+					result.put("rate", jo.getString("rate"));
+					result.put("termType", jo.getString("termType"));
+					result.put("term", jo.getString("term"));
+					result.put("totalNum", jo.getString("totalNum"));
+					result.put("remainNum", jo.getString("remainNum"));
+					result.put("guaranteeCompany", jo.getString("guaranteeCompany"));
+					result.put("returnType", jo.getString("returnType"));
+					result.put("valid_time", jo.getString("valid_time"));
+					
+					//得到投标记录信息
+					Map<String, String> params_record = new HashMap<String, String>();
+					params_record.put("apiLevel", Constants.apiLevel + "");
+					params_record.put("investId", id);
+					params_record.put("pageNo", "1");
+					http_record_result = HttpUtil.httpPost(Constants.investhistorylisturl, params_record);
+					
+				}else {
+					result.put("code", jo.get("result").toString());
+					result.put("mess", jo.getString("resultDesc"));
+				
+				}
+			} catch (Exception e) {
+				log.info("请求标的详情信息接口失败,error:"+e.getMessage());
+				result.put("mess", "请求失败");
+				
+			}
+			
+			model.addAttribute("info", result);
+			model.addAttribute("inforecord", http_record_result);
+			return "bid/bidInfo";
+		}
+		
+		/*
+		 * 显示某一个大客户的相关信息界面
+		 */
+			@RequestMapping(value = "targetcustomer/{id}", method = RequestMethod.GET)
+			public String targetcustomer_page(HttpServletRequest request, Model model,
+					@PathVariable("id") String id) {
+				model.addAttribute("rootdomain", rootdomain);
+				return "customer/targetCustomer";
+			}
+			
+		/*
+		* 投资列表、转贷专区、标列表
+		*/
+		@RequestMapping(value = "invests", method = RequestMethod.GET)
+		public String investlist_page(HttpServletRequest request, Model model) {
+			model.addAttribute("rootdomain", rootdomain);
+			return "bid/investList";
+		}
+		
+		/*
+		* 绝味专区
+		*/
+		@RequestMapping(value = "jwinvests", method = RequestMethod.GET)
+		public String JWinvestlist_page(HttpServletRequest request, Model model) {
+			model.addAttribute("rootdomain", rootdomain);
+			return "bid/JWinvestList";
+		}
+		
+		/*
+		* 得到标列表、转贷专区的列表、投资列表
+		* http://pay.cqg365.com/p2p/app/getInvestListByArea.html?
+		* areaType=3&pageNo=1&pageSize=10&status=14&borrowType=100&
+		* time_limit=all&apr=all&account=all
+		*/
+		@RequestMapping(value = "getinvestlist")
+		public void getinvestlist(HttpServletResponse response, HttpServletRequest request) throws IOException {
+			Map<String, String> params = new HashMap<String, String>();
+			String http_result ="";
+			
+			params.put("apiLevel", Constants.apiLevel+"");
+			params.put("areaType", this.getParameter("areaType"));
+			params.put("pageNo", this.getParameter("pageNo"));
+			params.put("pageSize", "10");
+			params.put("status", this.getParameter("status"));
+			params.put("borrowType", this.getParameter("borrowType"));
+			params.put("time_limit", this.getParameter("time_limit"));
+			params.put("apr", this.getParameter("apr"));
+			params.put("account", this.getParameter("account"));
+			try {
+				
+				
+				http_result = HttpUtil.httpPost(Constants.investlisturl, params);
+				JSONObject jo = JSONObject.fromObject(http_result);
+				if ("100".equals(jo.get("result"))) {
+					log.info("code:100,message:投资列表接口请求成功");
+					
+				}else {
+					log.info("code:"+jo.get("result").toString()+",message:投资列表接口请求失败，错误信息"+jo.getString("resultDesc"));
+				
+				}
+			} catch (Exception e) {
+				log.info("请求投资列表信息接口失败，发生异常,error:"+e.getMessage());
+				
+			}
+			response.setContentType("text/html; charset=UTF-8");
+	         PrintWriter out = response.getWriter();
+	         out.print(http_result);
+	         out.flush();
+	         out.close();
+		}
+		
+		
+		/*
+		* 充值页面
+		*/
+		@RequestMapping(value = "recharge", method = RequestMethod.GET)
+		public String bindcard_page(HttpServletRequest request, Model model) {
+			
+			return "bid/recharge";
+		}
+		
+		/*
+		* 银行卡列表
+		*/
+		@RequestMapping(value = "bankcards", method = RequestMethod.GET)
+		public String bankcards_page(HttpServletRequest request, Model model) {
+			if(this.servercookie==null){
+				//本地存储的服务器相关cookie不存在，则同步清除本地cookie
+				//清除本地cookie
+				this.setCookie(Constants.cookie_key, "", 1);
+				this.setCookie(Constants.cookie_username, "", 1);
+				this.setCookie(Constants.cookie_realstatus, "", 1);
+				this.setCookie(Constants.cookie_phone, "", 1);
+				this.setCookie(Constants.cookie_img, "", 1);
+				this.setCookie(Constants.cookie_cardid, "", 1);
+				this.setCookie(Constants.cookie_realname, "", 1);
+				this.setCookie(Constants.cookie_userid, "", 1);
+				return "login";
+			}
+			return "bid/bankCardList";
+		}
+		
+		
+		/*
+		* 银行卡列表
+		*/
+		@RequestMapping(value = "getbindcards")
+		public void getbankcards(HttpServletResponse response, HttpServletRequest request) throws IOException {
+			Map<String, String> params = new HashMap<String, String>();
+			String http_result ="";
+			params.put("apiLevel", Constants.apiLevel+"");
+			try {
+				
+				
+				http_result = HttpUtil.httpPost_check(Constants.getaccountbankurl, params,this.servercookie);
+				JSONObject jo = JSONObject.fromObject(http_result);
+				if ("100".equals(jo.get("result"))) {
+					log.info("code:100,message:代收详情接口请求成功");
+					
+				}else {
+					log.info("code:"+jo.get("result").toString()+",message:代收详情接口请求失败，错误信息"+jo.getString("resultDesc"));
+				
+				}
+			} catch (Exception e) {
+				log.info("请求代收详情信息接口失败，发生异常,error:"+e.getMessage());
+				
+			}
+			response.setContentType("text/html; charset=UTF-8");
+	         PrintWriter out = response.getWriter();
+	         out.print(http_result);
+	         out.flush();
+	         out.close();
+		}
+		
+		
+		/*
+		* 删除银行卡
+		*/
+		@RequestMapping(value = "deletebank")
+		public void deletebank(HttpServletResponse response, HttpServletRequest request) throws IOException {
+			Map<String, String> params = new HashMap<String, String>();
+			String http_result ="";
+			String bankid = getParameter("bankId");
+			params.put("apiLevel", Constants.apiLevel+"");
+			params.put("bankId", bankid);
+			try {
+				
+				
+				http_result = HttpUtil.httpPost_check(Constants.deletebankurl, params,this.servercookie);
+				JSONObject jo = JSONObject.fromObject(http_result);
+				if ("100".equals(jo.get("result"))) {
+					log.info("code:100,message:删除银行卡接口请求成功");
+					
+				}else {
+					log.info("code:"+jo.get("result").toString()+",message:删除银行卡接口请求失败，错误信息"+jo.getString("resultDesc"));
+				
+				}
+			} catch (Exception e) {
+				log.info("请求删除银行卡接口失败，发生异常,error:"+e.getMessage());
+				
+			}
+			response.setContentType("text/html; charset=UTF-8");
+	         PrintWriter out = response.getWriter();
+	         out.print(http_result);
+	         out.flush();
+	         out.close();
+		}
+		
+		
+		/*
+		* 添加银行卡界面
+		*/
+		@RequestMapping(value = "addbankcard", method = RequestMethod.GET)
+		public String addbankcard_page(HttpServletRequest request, Model model) {
+			if(this.servercookie==null&&super.servercookie==null){
+				//本地存储的服务器相关cookie不存在，则同步清除本地cookie
+				//清除本地cookie
+				
+				this.setCookie(Constants.cookie_key, "", 1);
+				this.setCookie(Constants.cookie_username, "", 1);
+				this.setCookie(Constants.cookie_realstatus, "", 1);
+				this.setCookie(Constants.cookie_phone, "", 1);
+				this.setCookie(Constants.cookie_img, "", 1);
+				this.setCookie(Constants.cookie_cardid, "", 1);
+				this.setCookie(Constants.cookie_realname, "", 1);
+				this.setCookie(Constants.cookie_userid, "", 1);
+				return "login";
+			}
+			String realname =this.getCookie(Constants.cookie_realname).toString()==""?"":AESUtil.decrypt(this.getCookie(Constants.cookie_realname));
+			String cardid =this.getCookie(Constants.cookie_cardid).toString()==""?"":AESUtil.decrypt(this.getCookie(Constants.cookie_cardid));
+			
+			model.addAttribute("realname", realname);
+			model.addAttribute("cardid", cardid);
+			return "bid/addbankcard";
+		}
+		
+		/*
+		 * 添加银行卡
+		 */
+		@RequestMapping(value="addbank")
+		public @ResponseBody Map<String, String> addbank( Model model ) {
+			String cardNumber = this.getParameter("cardNumber");
+			String openBank = this.getParameter("openBank");
+			String province = this.getParameter("province");
+			String city = this.getParameter("city");
+			String area = this.getParameter("area");
+			String branchName = this.getParameter("branchName");
+			String codeNo = this.getParameter("codeNo");
+			
+			Map<String, String> result = new HashMap<String, String>();
+			result.put("code", "1");
+			if (StringUtils.isBlank(cardNumber)) {
+				result.put("mess", "请填写银行卡号");
+				return result;
+			}
+			if (StringUtils.isBlank(openBank)) {
+				result.put("mess", "请填写开户行");
+				return result;
+			}
+			if (StringUtils.isBlank(province)) {
+				result.put("mess", "请填写开户省");
+				return result;
+			}
+			if (StringUtils.isBlank(city)) {
+				result.put("mess", "请填写开户市");
+				return result;
+			}
+			if (StringUtils.isBlank(area)) {
+				result.put("mess", "请填写开户区");
+				return result;
+			}
+			if (StringUtils.isBlank(branchName)) {
+				result.put("mess", "请填写开户支行");
+				return result;
+			}
+			if (StringUtils.isBlank(codeNo)) {
+				result.put("mess", "请填写验证码");
+				return result;
+			}
+			Map<String, String> params = new HashMap<String, String>();
+			params.put("apiLevel", Constants.apiLevel+"");
+			params.put("cardNumber", cardNumber);
+			params.put("openBank", openBank);
+			params.put("province", province);
+			params.put("city", city);
+			params.put("area", area);
+			params.put("branchName", branchName);
+			params.put("codeNo", codeNo);
+			try {
+				
+				String http_result = HttpUtil.httpPost_check(Constants.addbankurl, params,this.servercookie);
+				JSONObject jo = JSONObject.fromObject(http_result);
+				if ("100".equals(jo.get("result"))) {
+					result.put("code", "0");
+					result.put("mess", "新增成功！");
+					
+					return result;
+				}else {
+					result.put("code", "1");
+					result.put("mess", "新增失败！");
+					return result;
+				}
+			} catch (Exception e) {
+				log.info("请求新增银行卡接口失败,error:"+e.getMessage());
+				result.put("mess", "认证失败！");
+				return result;
+			}
+		}
+		
+		/*
+		* 临时测试所有功能接口测试页面
+		*/
+		@RequestMapping(value = "test", method = RequestMethod.GET)
+		public String test_page(HttpServletRequest request, Model model) {
+			
+			return "bid/test";
+		}
+		
+		
+		/*
+		 * 得到添加银行卡验证码
+		 */
+		@RequestMapping(value="getbindcardcode")
+		public @ResponseBody Map<String, String> getbindcardcode( Model model ) {
+			String phone = getParameter("phone");
+			Map<String, String> result = new HashMap<String, String>();
+			result.put("code", "1");
+			if (!PhoneUtil.isPhoneQualified(phone)) {
+				result.put("mess", "请输入正确的手机号！");
+				return result;
+			}
+			Map<String, String> params = new HashMap<String, String>();
+			params.put("apiLevel", Constants.apiLevel + "");
+			params.put("phoneNo", phone);
+			try {
+				String http_result = HttpUtil.httpPost_check(Constants.sendphonecodeaddbankurl, params,this.servercookie);
+				JSONObject jo = JSONObject.fromObject(http_result);
+				if ("100".equals(jo.get("result"))) {
+					result.put("code", "0");
+					result.put("mess", "注册成功！");
+					return result;
+				}else {
+					result.put("code", "1");
+					result.put("mess", jo.getString("resultDesc"));
+					return result;
+				}
+			} catch (Exception e) {
+				log.info("请求发送验证码接口失败,error:"+e.getMessage());
+				result.put("mess", "注册失败");
+				return result;
+			}
+		}
+			
+		
+		/*
+		 * 获得一级银行信息
+		 */
+		@RequestMapping(value = "getbanks")
+		public void getbanks_page(HttpServletResponse response, HttpServletRequest request) throws IOException {
+			Map<String, String> params = new HashMap<String, String>();
+			String http_result ="";
+			params.put("apiLevel", Constants.apiLevel+"");
+			
+			try {
+				http_result = HttpUtil.httpPost(Constants.getbankdataurl, params);
+				JSONObject jo = JSONObject.fromObject(http_result);
+				if ("100".equals(jo.get("result"))) {
+					log.info("code:100,message:银行请求成功");
+					
+				}else {
+					log.info("code:"+jo.get("result").toString()+",message:银行请求失败，错误信息"+jo.getString("resultDesc"));
+				
+				}
+			} catch (Exception e) {
+				log.info("请求银行信息接口失败，发生异常,error:"+e.getMessage());
+				
+			}
+			 response.setContentType("text/html; charset=UTF-8");
+	         PrintWriter out = response.getWriter();
+	         out.print(http_result);
+	         out.flush();
+	         out.close();
+		}
+		
+		
+		/*
+		 * 获得地区信息-省
+		 */
+		@RequestMapping(value = "getareas")
+		public void getareas_page(HttpServletResponse response, HttpServletRequest request) throws IOException {
+			Map<String, String> params = new HashMap<String, String>();
+			String areaid = getParameter("areaid");
+			String http_result ="";
+			params.put("apiLevel", Constants.apiLevel+"");
+			params.put("pid", areaid);
+			try {
+				http_result = HttpUtil.httpPost(Constants.showareaurl, params);
+				JSONObject jo = JSONObject.fromObject(http_result);
+				if ("100".equals(jo.get("result"))) {
+					log.info("code:100,message:地区请求成功");
+					
+				}else {
+					log.info("code:"+jo.get("result").toString()+",message:地区请求失败，错误信息"+jo.getString("resultDesc"));
+				
+				}
+			} catch (Exception e) {
+				log.info("请求地区信息接口失败，发生异常,error:"+e.getMessage());
+				
+			}
+			 response.setContentType("text/html; charset=UTF-8");
+	         PrintWriter out = response.getWriter();
+	         out.print(http_result);
+	         out.flush();
+	         out.close();
+		}
+		
+		
+		/*
+		 * 获得支行信息
+		 */
+		@RequestMapping(value = "getbankbranchs")
+		public void getbankbranchs_page(HttpServletResponse response, HttpServletRequest request) throws IOException {
+			Map<String, String> params = new HashMap<String, String>();
+			String bank = getParameter("bank");
+			String province = getParameter("province");
+			String city = getParameter("city");
+			String area = getParameter("area");
+			
+			String http_result ="";
+			params.put("apiLevel", Constants.apiLevel+"");
+			params.put("bank", bank);
+			params.put("province", province);
+			params.put("city", city);
+			params.put("area", area);
+			
+			try {
+				http_result = HttpUtil.httpPost(Constants.getbranchsurl, params);
+				JSONObject jo = JSONObject.fromObject(http_result);
+				if ("100".equals(jo.get("result"))) {
+					log.info("code:100,message:支行请求成功");
+					
+				}else {
+					log.info("code:"+jo.get("result").toString()+",message:支行请求失败，错误信息"+jo.getString("resultDesc"));
+				
+				}
+			} catch (Exception e) {
+				log.info("请求支行信息接口失败，发生异常,error:"+e.getMessage());
+				
+			}
+			 response.setContentType("text/html; charset=UTF-8");
+	         PrintWriter out = response.getWriter();
+	         out.print(http_result);
+	         out.flush();
+	         out.close();
+		}
+		
+		/*
+		 * 找回密码
+		 */
+		@RequestMapping(value = "getback_pwd")
+		public String getback_pwd_page(HttpServletRequest request,Model model) {
+			String phone = getParameter("phone");
+			Map<String, String> params = new HashMap<String, String>();
+			params.put("apiLevel", Constants.apiLevel + "");
+			params.put("phoneNo", phone);
+			String http_result = HttpUtil.httpPost(Constants.codeurl, params);
+			//JSONObject jo = JSONObject.fromObject(http_result);	
+			model.addAttribute("rootdomain", http_result);
+			return "account/getback_pwd";
+		}
+		
+		
+		/*
+		 * 意见反馈  (未提供接口)
+		 */
+		@RequestMapping(value = "feedback")
+		public String feedback_page(Model model) {
+			model.addAttribute("rootdomain", "hello world");
+			return "account/feedback";
+		}
+		
+		/*
+		 * 重置密码
+		 */
+		@RequestMapping(value = "pwd_reset")
+		public String pwd_reset_page(Model model) {
+			model.addAttribute("rootdomain", "hello world");
+			return "account/pwd_reset";
+		}
+		
+		/*
+		 * 实名认证
+		 */
+		@RequestMapping(value = "rn_confirm/page")
+		public String realnameConfirm_page(Model model) {
+			model.addAttribute("rootdomain", "hello world");
+			return "account/rn_confirm";
+		}
+		
+		@RequestMapping(value="rn_confirm")
+		public @ResponseBody Map<String, String> rnconfirm( Model model ) {
+			String realname = this.getParameter("realname");
+			String cardid = this.getParameter("id");
+			
+			Map<String, String> result = new HashMap<String, String>();
+			result.put("code", "1");
+			if (StringUtils.isBlank(realname)) {
+				result.put("mess", "请填写姓名");
+				return result;
+			}
+			if (StringUtils.isBlank(cardid)) {
+				result.put("mess", "请填写身份证号");
+				return result;
+			}
+			String userid =this.getCookie(Constants.cookie_userid).toString()==""?"":AESUtil.decrypt(this.getCookie(Constants.cookie_userid));
+			Map<String, String> params = new HashMap<String, String>();
+			params.put("apiLevel", Constants.apiLevel+"");
+			params.put("user_id", userid);
+			params.put("realName", realname);
+			params.put("idNumber", cardid);
+			try {
+				String http_result = HttpUtil.httpPost(Constants.authenticationurl, params);
+				JSONObject jo = JSONObject.fromObject(http_result);
+				if ("100".equals(jo.get("result"))) {
+					result.put("code", "0");
+					result.put("mess", "认证成功！");
+					this.setCookie(Constants.cookie_realname, AESUtil.encrypt(realname), Constants.EXP_ONEDAY);
+					
+					return result;
+				}else {
+					result.put("code", "1");
+					result.put("mess", "认证失败！");
+					return result;
+				}
+			} catch (Exception e) {
+				log.info("请求认证接口失败,error:"+e.getMessage());
+				result.put("mess", "认证失败！");
+				return result;
+			}
+		}
+		
+		/*
+		 * 验证账户信息
+		 */
+		@RequestMapping(value = "indetify_account")
+		public String idetify_page(Model model) {
+			model.addAttribute("rootdomain", "hello world");
+			return "account/indetify_account";
+		}
+		
+		/*
+		 * 修改交易密码
+		 */
+		@RequestMapping(value = "update_pwd")
+		public String update_pwd_page(Model model) {
+			model.addAttribute("rootdomain", "hello world");
+			return "account/update_pwd";
+		}
+
 }

@@ -12,6 +12,8 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
+import javax.servlet.http.Cookie;
+
 public class TestConnect {
 
 	/**
@@ -72,9 +74,11 @@ public class TestConnect {
 			url = new URL(str);
 		} else
 			url = new URL(TestConnect.baseurl);
-		
+	//	String a=this.getcookie();
 		HttpURLConnection.setFollowRedirects(true);
 		hc = (HttpURLConnection) url.openConnection();
+	//	hc.getHeaderFields();
+	//	hc.getRequestProperties();
 		hc.setRequestMethod("POST");
 		hc.setRequestProperty("User-Agent", "Mozilla/5.0 (Windows NT 6.1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/33.0.1750.154 Safari/537.36");
 		hc.setDoOutput(true);
@@ -162,6 +166,8 @@ public class TestConnect {
 		String cookieskey = "Set-Cookie";
 		Map<String, List<String>> maps = hc.getHeaderFields();
 		List<String> coolist = maps.get(cookieskey);
+		if(coolist==null)
+			return "";
 		Iterator<String> it = coolist.iterator();
 		StringBuffer sbu = new StringBuffer();
 		sbu.append("eos_style_cookie=default; ");

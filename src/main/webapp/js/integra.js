@@ -45,6 +45,26 @@ function time(o) {
 			}
 		})
 	});
+	$('.btn_getaddbankcode').bind('click',function(){
+		var phone_num = $('.addbankphone').val();
+		if(wait != 60){
+			$.toast('请在'+wait+'秒后重新获取');
+			return false;
+		};
+		if( !(/^1[3|4|5|7|8][0-9]\d{8}$/.test(phone_num)) ){
+			$.toast("请输入正确的手机号",1500);
+			return false;
+		};
+		time(this);
+		$.post(rooturl + "/getbindcardcode" , {phone:phone_num} , function(resp){
+			if("false" == (resp.toString())){
+				$.toast('验证码获取失败！');
+			}else{
+				$.toast('验证码获取成功，请保持手机畅通！' , 2000);
+			}
+		})
+	});
+	
 	$('#regist_phone').keyup(function(){
 		var phone_val = $(this).val();
 		if(!phone_val || !(/^1[3|4|5|7|8][0-9]\d{8}$/.test(phone_val))){

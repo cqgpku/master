@@ -29,21 +29,21 @@
 		<div class="home_middle_box left1">
 		</div>
 		<div class="home_middle_box right">
-		<p><span style="font-size: 34px;color:#989898;">绝味专区</span><br>
+		<p><span style="font-size: 34px;color:#989898;" onclick="window.location.href='<%=basePath%>jwinvests'">绝味专区</span><br>
 		描述描述描述描述</p>
 		</div></div>
 		<div class="home_middle_box">
 		<div class="home_middle_box left2">
 		</div>
 		<div class="home_middle_box right">
-		<p><span style="font-size: 34px;color:#989898;">转贷专区</span><br>
+		<p><span style="font-size: 34px;color:#989898;" onclick="window.location.href='<%=basePath%>invests'">转贷专区</span><br>
 		描述描述描述描述</p>
 		</div></div>
 		<div class="home_middle_box">
 		<div class="home_middle_box left3">
 		</div>
 		<div class="home_middle_box right">
-		<p><span style="font-size: 34px;color:#989898;">散标投资</span><br>
+		<p><span style="font-size: 34px;color:#989898;" onclick="window.location.href='<%=basePath%>targetcustomer/1'">散标投资</span><br>
 		描述描述描述描述</p>
 		</div></div>
 		

@@ -28,6 +28,7 @@ public abstract class BaseController {
 	private HttpServletRequest request;
 	private HttpServletResponse response;
 	HttpCookie servercookie =null;
+	String jsessionid =null;
 	
 	public HttpServletRequest getRequest() {
 		return request;
@@ -83,8 +84,8 @@ public abstract class BaseController {
 	}
 	
 	
-	protected void clearCookie(HttpServletRequest request,HttpServletResponse response, String path) {
-	      Cookie[] cookies = request.getCookies();
+	protected void clearCookie(Cookie[] cookies,String path) {
+	    
 	      try
 	      {
 	           for(int i=0;i<cookies.length;i++)  

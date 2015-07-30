@@ -31,23 +31,32 @@
 		<label style="float:right;margin-right:15px;"><span onclick="addbank();">+</span></label>
 </div>
 <div class="bankcard_middle">
-<div class="bankcard_middle_box">
+ 
+<!-- <div class="bankcard_middle_box">
 <div class="bankcard_middle_box_label" id="bank1" onclick="showdelete(this);">
 	<label >交通银行北京海淀支行</label><br>
 	<label style="color:#cccccc;">尾号0909</label>
 	</div>
 	<div class="bankcard_middle_box_delete" id="bank1delete" onclick="deletebank(this);">删除</div>
-</div>
+</div> -->
 </div>
 		
 </body>
 <script>
-	function submit(){
-		$.post(rooturl + "/getbindcardcode" , {phone:"18810350207"} , function(resp){
-			if("false" == (resp.toString())){
-				$.toast('验证码获取失败！');
-			}else{
-				$.toast('验证码获取成功，请保持手机畅通！' , 2000);
+init();
+
+	function init(){
+		$.post(rooturl + "/getbindcards" , {} , function(resp){
+			if(typeof(resp) != "object"){
+				resp = JSON.parse(resp);
+			}
+			//$.toast(resp.mess , 2000);
+			if(resp.result == "100"){
+				//加载地区信息
+				var banks=resp.bankData;
+				for(var i=0;i<banks.length;i++){
+					$(".bankcard_middle").append("<div class=\"bankcard_middle_box\"><div class=\"bankcard_middle_box_label\" id=\""+banks[i].bankId+"\" onclick=\"showdelete(this);\"><label >"+banks[i].branch+"</label><br><label style=\"color:#cccccc;\">尾号"+banks[i].bankaccount+"</label></div><div class=\"bankcard_middle_box_delete\" id=\""+banks[i].bankId+"del\" onclick=\"deletebank(this);\">删除</div></div>");
+				}
 			}
 		})
 		
@@ -56,11 +65,24 @@
 	
 	function showdelete(obj){
 		$("#"+obj.id).css("margin-left","-150px");
-		$("#"+obj.id+"delete").css({"margin-right":"0","display":"block"});
+		$("#"+obj.id+"del").css({"margin-right":"0","display":"block"});
 	}
 	
 	function deletebank(obj){
-		alert("删除"+obj.id);
+	//	alert("删除"+obj.id);
+		//删除银行卡
+		var bankid = obj.id.substring(0,str.length-3);;
+		
+		$.post(rooturl + "/deletebank" , {bankId:bankid} , function(resp){
+			var result=eval('(' + resp + ')')
+			if(result.code=="0")
+			{
+				$.toast('删除成功！' , 2000);
+				window.location.reload();
+			}else{
+				$.toast('删除失败失败！' , 2000);
+			}
+		})
 	}
 	
 	function addbank(){

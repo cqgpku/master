@@ -74,6 +74,8 @@ public class HttpUtil {
 		return buffer.toString();
 	}
 	
+	
+	
 	public static HttpCookie httpPost_getcookie(String url, Map<String, String> params) {
 		HttpCookie hcoo =null;
 		URI uri = null;
@@ -137,7 +139,7 @@ public class HttpUtil {
 			con.setDoInput(true);
 			con.setUseCaches(false);
 			if(servercookie!=null&&!servercookie.hasExpired()){
-				con.setRequestProperty("Cookie","Cookie: "+servercookie.getValue());
+				con.setRequestProperty("Cookie",servercookie.getValue());
 			}
 			con.setRequestProperty("Content-Type","application/x-www-form-urlencoded");
 			OutputStreamWriter osw = new OutputStreamWriter(con.getOutputStream(), "UTF-8");

@@ -40,14 +40,14 @@
 		<div class="accountmanage_box right">
 		<label>${bindphone}</label></div>
 		</div>
-		<div class="accountmanage_box">
+		<div class="accountmanage_box" onclick="window.location.href='<%=basePath%>bindemail'">
 		<div class="accountmanage_box left">
 		<img alt="#" src="img/done.png">&nbsp;
 		<label>绑定邮箱</label></div>
 		<div class="accountmanage_box right">
 		<label>${bindemail} ></label></div>
 		</div>
-		<div class="accountmanage_box">
+		<div class="accountmanage_box" onclick="window.location.href='<%=basePath%>update_pwd'">
 		<div class="accountmanage_box left">
 		<img alt="#" src="img/done.png">&nbsp;
 		<label>交易密码</label></div>

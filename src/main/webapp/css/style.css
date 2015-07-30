@@ -97,100 +97,107 @@ dl.code dd.un{
 div.account_top{
 	width:100%;
 	margin:0 auto;
-	height:215px;
+	height:368px;
 	background-color: #25c3da;
 }
 
 div.account_top .top{
 	width:100%;
 	margin:0 auto;
-	height:45px;
-	font-size: 24px;
+	height:88px;
+	font-size: 48px;
 	color: #ffffff;
 	vertical-align:middle;
 	text-align:center;
-	line-height: 45px;
+	line-height: 88px;
 }
 div.account_top .middle{
 	width:100%;
 	margin:0 auto;
-	height:110px;
-	font-size: 18px;
+	height:180px;
+	font-size: 20px;
 	color: #ffffff;
 }
 div.account_top_middle_img{
-	width:80px;
-	height:110px;
-	margin-left:10px;
+	width:120px;
+	height:120px;
+	margin-left:30px;
 	float:left;
 	vertical-align: middle;
 	text-align: center;
 }
 div.account_top_middle_img img{
-	width:60px;
-	height:60px;
+	width:120px;
+	height:120px;
 	margin:0 auto;
-	
+		border: 5px solid #dedede;
+-moz-border-radius: 80px; 
+-webkit-border-radius: 80px; 
+border-radius:80px; 
 }
 div.account_top_middle_label{
 	width: auto;
 	height: 90px;
 	margin-top: 20px;
-	margin-right: -35px;
+	margin-right: -45px;
 	float: right;
-	line-height: 25px;
+	line-height: 50px;
 	text-align: right;
 }
 div.account_top .bottom{
 	width:100%;
 	margin:0 auto;
 	height:60px;
-	font-size: 14px;
+	font-size: 20px;
 	color: #ffffff;
 	float:right;
 }
 div.account_top_bottom_label{
 	width: 150px;
 	height: 60px;
-	margin-right:10px;
+	margin-right:30px;
 	float: right;
 	text-align: right;
 	line-height: 30px;
 }
 div.account_middle{
 	width:100%;
-	margin-top:30px;
+	margin-top:60px;
 	height:100%;
 	text-align: center;
 	background:#fff;
 }
 div.account_middle_content{
-	width:95%;
+	width:auto;
 	margin:0 auto;
-	margin-top:15px;
-	height:110px;
+	margin-top:30px;
+	margin-left:30px;
+	margin-right:15px;
+	height:150px;
 	background:#fff;
 }
 div.account_middle_content_block{
-	width:31%;
-	height:100%;
+	width:30%;
+	height:150px;
 	float: left;
+	margin-right:15px;
 	vertical-align: middle;
 	text-align: center;
-	background-color: #e0e0e0;
+	background-color: #f2f5f7;
 	
 }
 div.account_middle_content_block img{
-	width:60px;
-	height:60px;
+	width:100px;
+	height:100px;
 	margin:0 auto;
 	margin-top: 5px;
 }
 div.account_middle_content_block label{
 	width:60px;
 	height:30px;
-	font-size: 14px;
+	font-size: 28px;
 	margin-top: 5px;
+	color:#989898;
 }
 /* myAccount.jsp end******************* */
 
@@ -448,6 +455,12 @@ div.targetCustomer_top{
 	background-color: #ffffff;
 	text-align: center;
 }
+div.targetCustomer_top .top1{
+	width:100%;
+	height:80px;
+	margin-top:10px;
+	line-height: 80px;
+}
 div.targetCustomer_top .top{
 	width:90%;
 	height:80px;
@@ -494,6 +507,13 @@ div.targetCustomer_middle .box .right{
 	width:30%;
 	float:left;
 	background:url("../img/vip50.png") no-repeat center center;
+
+}
+div.targetCustomer_middle .box .rightdone{
+	line-height: 240px;
+	width:30%;
+	float:left;
+	background:url("../img/12.png") no-repeat center center;
 
 }
 /* targetCustomer.jsp end******************* */
@@ -962,7 +982,7 @@ div.bankcard_middle_box_delete{
 	line-height: 149px;
 	display:none;
 	margin-right:-150px;
-	background-color: #25c3da;
+	background-color: #ff0033;
 }
 div.bankcard_middle_box_label label{
 	margin-left:30px;color:#494949;font-size: 34px;
