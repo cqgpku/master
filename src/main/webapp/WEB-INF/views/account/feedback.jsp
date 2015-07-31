@@ -9,7 +9,7 @@
 <html>
 	<head>
 		<meta charset="utf-8" />
-		<meta name="viewport" content="initial-scale=1.0,maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,maximum-scale=1, user-scalable=no">
+		<meta name="viewport" content="initial-scale=0.5,maximum-scale=1.0,minimum-scale=0.5,user-scalable=0,width=device-width,maximum-scale=1, user-scalable=no">
 		<meta name="format-detection" content="telephone=no" />
 		<meta name="format-detection" content="email=no" />
 	
@@ -36,7 +36,7 @@
                 <textarea class="fd_contact" type="text" name="contact" placeholder="请留下您的联系方式QQ/手机/邮箱"></textarea>
             </div>
             <div class="fd_sub">
-                <input class="fd_submit" type="submit" value="æäº¤">
+                <input class="fd_submit" type="submit" value="意见反馈">
             </div>
         </form>
     </div>

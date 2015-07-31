@@ -113,7 +113,7 @@
 
 	function init(){
 		$(".targetCustomer_middle").empty();
-		var areaType="1";
+		var areaType="1";//供应链专区
 		var pageNo="1";
 		var pageSize="10";
 		var status="14";
@@ -132,7 +132,7 @@
 				var invests=resp.jwzqInvestList;
 				var html="";
 				for(var i=0;i<invests.length;i++){
-					html+="<div class=\"targetCustomer_middle box\"><div class=\"targetCustomer_middle box left\"><div style=\"height:140px;border-bottom: 1px solid #cccccc;line-height: 30px;\"><div style=\"height:60px;line-height: 60px;\"><label style=\"font-size: 24px;color:#494949;\"><img style=\"width:28px;height:28px;\" src=\""+rooturl+"/img/10.png\">"+invests[i].title+"&nbsp;<span style=\"background: #25c3da;border-radius: 5px;font-size: 20px;color:#cccccc;\">期限"+invests[i].term+(invests[i].termType=="0"?"个月":"天")+"</span></label></div><div style=\"height:80px;line-height: 30px;\"><label style=\"color: #25c3da;font-size:28px;float:left;\">"+invests[i].rate+" &nbsp;&nbsp;</label><label style=\"color: #494949;font-size:28px;float:center;\">"+invests[i].totalNum+"</label><br><label style=\"float:left;\">年化收益 &nbsp;&nbsp; &nbsp;&nbsp;&nbsp;</label><label style=\"float:center;\">融资总额（元）</label></div></div><div style=\"height:60px;line-height: 60px;\"><label>"+invests[i].guarantee_corporation+"</label></div></div><div class=\"targetCustomer_middle box right\"></div></div>";
+					html+="<div class=\"targetCustomer_middle box\"  onclick=\"window.location.href='"+rooturl+"bidinfo/"+invests[i].investId+"'\"><div class=\"targetCustomer_middle box left\"><div style=\"height:140px;border-bottom: 1px solid #cccccc;line-height: 30px;\"><div style=\"height:60px;line-height: 60px;\"><label style=\"font-size: 24px;color:#494949;\"><img style=\"width:28px;height:28px;\" src=\""+rooturl+"/img/10.png\">"+invests[i].title+"&nbsp;<span style=\"background: #25c3da;border-radius: 5px;font-size: 20px;color:#cccccc;\">期限"+invests[i].term+(invests[i].termType=="0"?"个月":"天")+"</span></label></div><div style=\"height:80px;line-height: 30px;\"><label style=\"color: #25c3da;font-size:28px;float:left;\">"+invests[i].rate+" &nbsp;&nbsp;</label><label style=\"color: #494949;font-size:28px;float:center;\">"+invests[i].totalNum+"</label><br><label style=\"float:left;\">年化收益 &nbsp;&nbsp; &nbsp;&nbsp;&nbsp;</label><label style=\"float:center;\">融资总额（元）</label></div></div><div style=\"height:60px;line-height: 60px;\"><label>"+invests[i].guarantee_corporation+"</label></div></div><div class=\""+(invests[i].percentage=="1"?"targetCustomer_middle box rightdone":"targetCustomer_middle box right")+"\"></div></div>";
 				}
 				$(".targetCustomer_middle").append(html);
 			}

@@ -346,11 +346,7 @@
 					var span_timer = document.getElementById("time");
 					span_timer.innerHTML = "剩余时间：无，已售罄";
 				}
-				if("${info.buylimit}"=="0")
-				{
-					var span_timer = document.getElementById("time");
-					span_timer.innerHTML = "剩余时间：无，不可购买";
-				}
+				
 		
 		//更新投资金额百分比
 		var summoney="${info.totalNum}";
@@ -369,7 +365,7 @@
 			$("#bid_middle_3_tab_tab2").attr("class", "bid_middle_3_tab_tab1"); 
 			$("#bid_middle_3_tab_tab1").attr("class", "bid_middle_3_tab_tab2"); 
 			var investId="${info.investId}";
-			$.post(rooturl + "/getinvestrecords" , {investId:investId} , function(resp){
+			$.post(rooturl + "/getvipinvestrecords" , {investId:investId} , function(resp){
 				if(typeof(resp) != "object"){
 					resp = JSON.parse(resp);
 				}
@@ -377,10 +373,10 @@
 				{
 					$("#description").empty();
 					//加载信息
-					$("#description").append("<div class=\"bid_middle_3_page_box\" style=\"height:60px;\"><label style=\"width:28%;float:left;height:60px;line-height:60px;\">投资用户</label><label style=\"width:28%;float:left;height:60px;line-height:60px;\">投资金额（元）</label><label style=\"width:28%;float:left;height:60px;line-height:60px;\">有效金额（元）</label></div>");
-					var records=resp.investHistory;
+					$("#description").append("<div class=\"bid_middle_3_page_box\" style=\"height:60px;\"><label style=\"width:28%;float:left;height:60px;line-height:60px;\">投资用户</label><label style=\"width:28%;float:left;height:60px;line-height:60px;\">投资金额（元）</label><label style=\"width:28%;float:left;height:60px;line-height:60px;\">审核时间</label></div>");
+					var records=resp.vipBorrowOrderList;
 					for(var i=0;i<records.length;i++){
-						$("#description").append("<div class=\"bid_middle_3_page_box\"><label>"+records[i].userName+"</label><label>"+records[i].investNum+"</label><label>"+records[i].validInvestNum+"</label><br><label style=\"width:100%;text-align:left;\">"+records[i].investTime+"</label></div>");
+						$("#description").append("<div class=\"bid_middle_3_page_box\"><label>"+records[i].username+"</label><label>"+records[i].money+"</label><label>"+records[i].verify_time+"</label><br><label style=\"width:100%;text-align:left;\">"+records[i].order_time+"</label></div>");
 					}
 				}else{
 					$.toast('获取投标记录失败！' , 2000);

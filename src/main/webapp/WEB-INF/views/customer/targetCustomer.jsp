@@ -17,6 +17,8 @@
 		<meta name="description" content="" />
 		<link rel="stylesheet" href="<%=path%>/css/reset.css">
 		<link rel="stylesheet" href="<%=path%>/css/style.css">
+		<script type="text/javascript" src="<%=path%>/js/jquery.js"></script>
+		<link rel="stylesheet" href="<%=path%>/css/pluginstyle.css">
 		<!-- <link rel="stylesheet" href="/css/reset.css">
 		<link rel="stylesheet" href="/css/style.css"> -->
 		<script>
@@ -28,7 +30,8 @@
 		<div class="targetCustomer_top top">预约借款</div>
 		<div class="targetCustomer_top middle">
 		<label >预约投资</label>
-		</div>
+		</div> 
+		
 		</div>
 		
 		<div class="targetCustomer_middle">
@@ -66,4 +69,30 @@
 		
 		
 	</body>
+	<script>
+	init();
+
+	function init(){
+		$(".targetCustomer_middle").empty();
+		
+		$.post(rooturl + "/getvipborrowinfourl" , {} , function(resp){
+			if(typeof(resp) != "object"){
+				resp = JSON.parse(resp);
+			}
+			//$.toast(resp.mess , 2000);
+			if(resp.result == "100"){
+				//加载投资列表信息
+				
+				var invests=resp.vipBorrowList;
+				var html="";
+				for(var i=0;i<invests.length;i++){
+					html+="<div class=\"targetCustomer_middle box\"  onclick=\"window.location.href='"+rooturl+"vipbidinfo/"+invests[i].id+"'\"><div class=\"targetCustomer_middle box left\"><div style=\"height:140px;border-bottom: 1px solid #cccccc;line-height: 30px;\"><div style=\"height:60px;line-height: 60px;\"><label style=\"font-size: 24px;color:#494949;\">"+invests[i].name+"&nbsp;<span style=\"background: #25c3da;border-radius: 5px;font-size: 20px;color:#cccccc;\">期限"+invests[i].time_limit+(invests[i].type=="0"?"个月":"天")+"</span></label></div><div style=\"height:80px;line-height: 30px;\"><label style=\"color: #25c3da;font-size:28px;float:left;\">"+invests[i].apr+" &nbsp;&nbsp;</label><label style=\"color: #494949;font-size:28px;float:center;\">"+invests[i].account+"</label><br><label style=\"float:left;\">年化收益 &nbsp;&nbsp; &nbsp;&nbsp;&nbsp;</label><label style=\"float:center;\">融资总额（元）</label></div></div><div style=\"height:60px;line-height: 60px;\"><label>"+invests[i].org+"</label></div></div><div class=\"targetCustomer_middle box right\"></div></div>";
+				}
+				$(".targetCustomer_middle").append(html);
+			}
+		})
+		
+		
+	}
+	</script>
 </html>

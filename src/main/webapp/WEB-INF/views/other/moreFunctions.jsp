@@ -27,24 +27,24 @@
 		<div style="margin-top:10px;border-top: 1px solid #cccccc;">
 		<div class="morefunction_box">
 		<div class="morefunction_box left">
-		<img alt="#" src="img/logo.png">&nbsp;
+		<img alt="#" src="img/done.png">&nbsp;
 		<label>活动</label></div>
 		<div class="morefunction_box right">
 		<label>>></label></div>
 		</div>
-		<div class="morefunction_box">
+		<div class="morefunction_box" onclick="window.location.href='<%=basePath%>feedback'">
 		<div class="morefunction_box left">
-		<img alt="#" src="img/logo.png">&nbsp;
+		<img alt="#" src="img/done.png">&nbsp;
 		<label>意见反馈</label></div>
 		<div class="morefunction_box right">
 		<label>>></label></div>
 		</div>
 		<div class="morefunction_box">
 		<div class="morefunction_box left">
-		<img alt="#" src="img/logo.png">&nbsp;
-		<label>关于</label></div>
+		<img alt="#" src="img/done.png">&nbsp;
+		<label>下载</label></div>
 		<div class="morefunction_box right">
-		<label>>></label></div>
+		<label><a href="<%=basePath%>MoneyBox_debug_20150727.apk">点此下载</a></label></div>
 		</div>
 		
 		<div class="morefunction_bottomimg">

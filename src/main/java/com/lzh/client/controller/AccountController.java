@@ -105,6 +105,12 @@ public class AccountController extends BaseController{
 		return "regist";
 	}
 	
+	@RequestMapping(value = "download")
+	public void download_page(Model model,HttpServletRequest request,HttpServletResponse response) throws IOException  {
+		response.sendRedirect(Constants.locationUrl+"MoneyBox_debug_20150727.apk");
+		//return "/MoneyBox_debug_20150727.apk";
+	}
+	
 	@RequestMapping(value="register")
 	public @ResponseBody Map<String, String> register( Model model ) {
 		String phone = getParameter("phone");
@@ -176,27 +182,19 @@ public class AccountController extends BaseController{
 		
 		if(this.servercookie==null){
 			//清除本地cookie
-			this.setCookie(Constants.cookie_key, "", 1);
-			this.setCookie(Constants.cookie_username, "", 1);
-			this.setCookie(Constants.cookie_realstatus, "", 1);
-			this.setCookie(Constants.cookie_phone, "", 1);
-			this.setCookie(Constants.cookie_img, "", 1);
-			this.setCookie(Constants.cookie_cardid, "", 1);
-			this.setCookie(Constants.cookie_realname, "", 1);
-			this.setCookie(Constants.cookie_userid, "", 1);
-		}
-		String nop = this.getCookie(Constants.cookie_key);
-		if (!StringUtils.isBlank(nop)) {
-			nop = AESUtil.decrypt(nop);
+			clearcookie();
+		}else{
+			String nop = this.getCookie(Constants.cookie_key);
 			if (!StringUtils.isBlank(nop)) {
+				nop = AESUtil.decrypt(nop);
 				model.addAttribute("phone" , nop);
-				model.addAttribute("rootdomain", rootdomain);
-				response.sendRedirect(Constants.locationUrl);
-				//return "account/myAccount";
+				response.sendRedirect(Constants.locationUrl+"homepage");
+			}else{
+				//清除本地cookie
+				clearcookie();
 			}
 		}
 		
-		model.addAttribute("rootdomain", rootdomain);
 		return "login";
 	}
 	
@@ -270,17 +268,11 @@ public class AccountController extends BaseController{
 		params.put("apiLevel", Constants.apiLevel+"");
 		
 		try {
+			
 			if(this.servercookie==null){
 				//本地存储的服务器相关cookie不存在，则同步清除本地cookie
 				//清除本地cookie
-				this.setCookie(Constants.cookie_key, "", 1);
-				this.setCookie(Constants.cookie_username, "", 1);
-				this.setCookie(Constants.cookie_realstatus, "", 1);
-				this.setCookie(Constants.cookie_phone, "", 1);
-				this.setCookie(Constants.cookie_img, "", 1);
-				this.setCookie(Constants.cookie_cardid, "", 1);
-				this.setCookie(Constants.cookie_realname, "", 1);
-				this.setCookie(Constants.cookie_userid, "", 1);
+				clearcookie();
 			}
 			String http_result = HttpUtil.httpPost_check(Constants.loginouturl, params,this.servercookie);
 			JSONObject jo = JSONObject.fromObject(http_result);
@@ -325,16 +317,19 @@ public class AccountController extends BaseController{
 		params.put("apiLevel", Constants.apiLevel+"");
 		try {
 			if(this.servercookie==null){
-				//本地存储的服务器相关cookie不存在，则同步清除本地cookie
 				//清除本地cookie
-				this.setCookie(Constants.cookie_key, "", 1);
-				this.setCookie(Constants.cookie_username, "", 1);
-				this.setCookie(Constants.cookie_realstatus, "", 1);
-				this.setCookie(Constants.cookie_phone, "", 1);
-				this.setCookie(Constants.cookie_img, "", 1);
-				this.setCookie(Constants.cookie_cardid, "", 1);
-				this.setCookie(Constants.cookie_realname, "", 1);
-				this.setCookie(Constants.cookie_userid, "", 1);
+				clearcookie();
+			}else{
+				String nop = this.getCookie(Constants.cookie_key);
+				if (!StringUtils.isBlank(nop)) {
+					
+				}else{
+					//清除本地cookie
+					clearcookie();
+				}
+			}
+			if(this.servercookie==null){
+				//本地存储的服务器相关cookie不存在，则同步清除本地cookie
 				return "login";
 			}
 			
@@ -379,16 +374,19 @@ public class AccountController extends BaseController{
 		params.put("apiLevel", Constants.apiLevel+"");
 		try {
 			if(this.servercookie==null){
-				//本地存储的服务器相关cookie不存在，则同步清除本地cookie
 				//清除本地cookie
-				this.setCookie(Constants.cookie_key, "", 1);
-				this.setCookie(Constants.cookie_username, "", 1);
-				this.setCookie(Constants.cookie_realstatus, "", 1);
-				this.setCookie(Constants.cookie_phone, "", 1);
-				this.setCookie(Constants.cookie_img, "", 1);
-				this.setCookie(Constants.cookie_cardid, "", 1);
-				this.setCookie(Constants.cookie_realname, "", 1);
-				this.setCookie(Constants.cookie_userid, "", 1);
+				clearcookie();
+			}else{
+				String nop = this.getCookie(Constants.cookie_key);
+				if (!StringUtils.isBlank(nop)) {
+					
+				}else{
+					//清除本地cookie
+					clearcookie();
+				}
+			}
+			if(this.servercookie==null){
+				//本地存储的服务器相关cookie不存在，则同步清除本地cookie
 				return "login";
 			}
 			
@@ -451,16 +449,19 @@ public class AccountController extends BaseController{
 		List<TradeRecord> records=new ArrayList<TradeRecord>();
 		try {
 			if(this.servercookie==null){
-				//本地存储的服务器相关cookie不存在，则同步清除本地cookie
 				//清除本地cookie
-				this.setCookie(Constants.cookie_key, "", 1);
-				this.setCookie(Constants.cookie_username, "", 1);
-				this.setCookie(Constants.cookie_realstatus, "", 1);
-				this.setCookie(Constants.cookie_phone, "", 1);
-				this.setCookie(Constants.cookie_img, "", 1);
-				this.setCookie(Constants.cookie_cardid, "", 1);
-				this.setCookie(Constants.cookie_realname, "", 1);
-				this.setCookie(Constants.cookie_userid, "", 1);
+				clearcookie();
+			}else{
+				String nop = this.getCookie(Constants.cookie_key);
+				if (!StringUtils.isBlank(nop)) {
+					
+				}else{
+					//清除本地cookie
+					clearcookie();
+				}
+			}
+			if(this.servercookie==null){
+				//本地存储的服务器相关cookie不存在，则同步清除本地cookie
 				return "login";
 			}
 			
@@ -516,16 +517,19 @@ public class AccountController extends BaseController{
 	@RequestMapping(value = "accountmanage")
 	public String accountmanage_page(Model model) {
 		if(this.servercookie==null){
-			//本地存储的服务器相关cookie不存在，则同步清除本地cookie
 			//清除本地cookie
-			this.setCookie(Constants.cookie_key, "", 1);
-			this.setCookie(Constants.cookie_username, "", 1);
-			this.setCookie(Constants.cookie_realstatus, "", 1);
-			this.setCookie(Constants.cookie_phone, "", 1);
-			this.setCookie(Constants.cookie_img, "", 1);
-			this.setCookie(Constants.cookie_cardid, "", 1);
-			this.setCookie(Constants.cookie_realname, "", 1);
-			this.setCookie(Constants.cookie_userid, "", 1);
+			clearcookie();
+		}else{
+			String nop = this.getCookie(Constants.cookie_key);
+			if (!StringUtils.isBlank(nop)) {
+				
+			}else{
+				//清除本地cookie
+				clearcookie();
+			}
+		}
+		if(this.servercookie==null){
+			//本地存储的服务器相关cookie不存在，则同步清除本地cookie
 			return "login";
 		}
 		
@@ -545,16 +549,19 @@ public class AccountController extends BaseController{
 	@RequestMapping(value = "accountinfo")
 	public String accountinfo_page(Model model) {
 		if(this.servercookie==null){
-			//本地存储的服务器相关cookie不存在，则同步清除本地cookie
 			//清除本地cookie
-			this.setCookie(Constants.cookie_key, "", 1);
-			this.setCookie(Constants.cookie_username, "", 1);
-			this.setCookie(Constants.cookie_realstatus, "", 1);
-			this.setCookie(Constants.cookie_phone, "", 1);
-			this.setCookie(Constants.cookie_img, "", 1);
-			this.setCookie(Constants.cookie_cardid, "", 1);
-			this.setCookie(Constants.cookie_realname, "", 1);
-			this.setCookie(Constants.cookie_userid, "", 1);
+			clearcookie();
+		}else{
+			String nop = this.getCookie(Constants.cookie_key);
+			if (!StringUtils.isBlank(nop)) {
+				
+			}else{
+				//清除本地cookie
+				clearcookie();
+			}
+		}
+		if(this.servercookie==null){
+			//本地存储的服务器相关cookie不存在，则同步清除本地cookie
 			return "login";
 		}
 		
@@ -590,6 +597,22 @@ public class AccountController extends BaseController{
 			params.put("investId", id);
 			String http_record_result="";
 			try {
+				if(this.servercookie==null){
+					//清除本地cookie
+					clearcookie();
+				}else{
+					String nop = this.getCookie(Constants.cookie_key);
+					if (!StringUtils.isBlank(nop)) {
+						
+					}else{
+						//清除本地cookie
+						clearcookie();
+					}
+				}
+				if(this.servercookie==null){
+					//本地存储的服务器相关cookie不存在，则同步清除本地cookie
+					return "login";
+				}
 				//得到投标详情信息
 				String http_result = HttpUtil.httpPost(Constants.investdetailurl, params);
 				JSONObject jo = JSONObject.fromObject(http_result);
@@ -611,12 +634,29 @@ public class AccountController extends BaseController{
 					result.put("returnType", jo.getString("returnType"));
 					result.put("valid_time", jo.getString("valid_time"));
 					
-					//得到投标记录信息
-					Map<String, String> params_record = new HashMap<String, String>();
-					params_record.put("apiLevel", Constants.apiLevel + "");
-					params_record.put("investId", id);
-					params_record.put("pageNo", "1");
-					http_record_result = HttpUtil.httpPost(Constants.investhistorylisturl, params_record);
+					if(jo.get("description")!=null){
+						result.put("description", jo.getString("description"));
+					}else{
+						result.put("description", "");
+					}
+					if(jo.get("pwd")!=null){
+						result.put("pwd", jo.getString("pwd"));
+					}
+					else{
+						result.put("pwd", "");
+					}
+					if(jo.get("buylimit")!=null){
+						result.put("buylimit", jo.getString("buylimit"));
+					}
+					else{
+						result.put("buylimit", "");
+					}
+					if(jo.get("last_time")!=null){
+						result.put("last_time", jo.getString("last_time"));
+					}
+					else{
+						result.put("last_time", "");
+					}
 					
 				}else {
 					result.put("code", jo.get("result").toString());
@@ -630,8 +670,160 @@ public class AccountController extends BaseController{
 			}
 			
 			model.addAttribute("info", result);
-			model.addAttribute("inforecord", http_record_result);
 			return "bid/bidInfo";
+		}
+		
+		
+		/*
+		 * 投标
+		 */
+		@RequestMapping(value="investtender")
+		public @ResponseBody Map<String, String> investtender( Model model ) {
+			String investId = this.getParameter("investId");
+			String money = this.getParameter("money");
+			String payPassword = this.getParameter("payPassword");
+			String borrowPayPassword = this.getParameter("borrowPayPassword");
+			
+			
+			Map<String, String> result = new HashMap<String, String>();
+			result.put("code", "1");
+			if (StringUtils.isBlank(investId)) {
+				result.put("mess", "标的id为空");
+				return result;
+			}
+			if (StringUtils.isBlank(money)) {
+				result.put("mess", "请填写投标金额");
+				return result;
+			}
+			if (StringUtils.isBlank(payPassword)) {
+				result.put("mess", "请填写交易密码");
+				return result;
+			}
+			
+			Map<String, String> params = new HashMap<String, String>();
+			params.put("apiLevel", Constants.apiLevel+"");
+			params.put("investId", investId);
+			params.put("money", money);
+			params.put("payPassword", payPassword);
+			if(borrowPayPassword!=null&&borrowPayPassword!="")
+				params.put("borrowPayPassword", borrowPayPassword);
+			
+		
+			try {
+				if(this.servercookie==null){
+					//本地存储的服务器相关cookie不存在，则同步清除本地cookie
+					//清除本地cookie
+					this.setCookie(Constants.cookie_key, "", 1);
+					this.setCookie(Constants.cookie_username, "", 1);
+					this.setCookie(Constants.cookie_realstatus, "", 1);
+					this.setCookie(Constants.cookie_phone, "", 1);
+					this.setCookie(Constants.cookie_img, "", 1);
+					this.setCookie(Constants.cookie_cardid, "", 1);
+					this.setCookie(Constants.cookie_realname, "", 1);
+					this.setCookie(Constants.cookie_userid, "", 1);
+					result.put("mess", "账户过期、用户未登录");
+					return result;
+				}
+				String http_result = HttpUtil.httpPost_check(Constants.tenderurl, params,this.servercookie);
+				JSONObject jo = JSONObject.fromObject(http_result);
+				if ("100".equals(jo.get("result"))) {
+					result.put("code", "0");
+					result.put("mess", "投资成功！");
+					
+					return result;
+				}else {
+					result.put("code", "1");
+					result.put("mess", "投资失败！");
+					return result;
+				}
+			} catch (Exception e) {
+				log.info("请求投资接口失败,error:"+e.getMessage());
+				result.put("mess", "投资失败！");
+				return result;
+			}
+		}
+		
+		/*
+		* 得到我的账户信息
+		*/
+		@RequestMapping(value = "getmyaccountinfo")
+		public  @ResponseBody Map<String, String> getmyaccountinfo( Model model ) {
+			Map<String, String> params = new HashMap<String, String>();
+			String http_result ="";
+			Map<String, String> result = new HashMap<String, String>();
+			params.put("apiLevel", Constants.apiLevel+"");
+			try {
+				if(this.servercookie==null){
+					//本地存储的服务器相关cookie不存在，则同步清除本地cookie
+					//清除本地cookie
+					this.setCookie(Constants.cookie_key, "", 1);
+					this.setCookie(Constants.cookie_username, "", 1);
+					this.setCookie(Constants.cookie_realstatus, "", 1);
+					this.setCookie(Constants.cookie_phone, "", 1);
+					this.setCookie(Constants.cookie_img, "", 1);
+					this.setCookie(Constants.cookie_cardid, "", 1);
+					this.setCookie(Constants.cookie_realname, "", 1);
+					this.setCookie(Constants.cookie_userid, "", 1);
+					result.put("mess", "未检测到用户登录信息，请重新登陆！");
+				}
+				
+				http_result = HttpUtil.httpPost_check(Constants.userinfourl, params,this.servercookie);
+				JSONObject jo = JSONObject.fromObject(http_result);
+				if ("100".equals(jo.get("result"))) {
+					result.put("code", "100");
+					result.put("mess", "请求成功！");
+					result.put("accountTotalAmount", jo.getString("accountTotalAmount"));
+					result.put("accumulatedIncome", jo.getString("accumulatedIncome"));
+					result.put("availableAmount", jo.getString("availableAmount"));
+				}else {
+					result.put("code", jo.get("result").toString());
+					result.put("mess", jo.getString("resultDesc"));
+					result.put("accountTotalAmount", "--");
+					result.put("accumulatedIncome", "--");
+					result.put("availableAmount", "--");
+				}
+			} catch (Exception e) {
+				log.info("请求我的账户信息接口失败,error:"+e.getMessage());
+				result.put("mess", "请求失败");
+				
+			}
+			return result;
+		}
+		
+		/*
+		* 标的投标记录查询
+		*/
+		@RequestMapping(value = "getinvestrecords")
+		public void getinvestrecords(HttpServletResponse response, HttpServletRequest request) throws IOException {
+			Map<String, String> params = new HashMap<String, String>();
+			String http_result ="";
+			String investId = this.getParameter("investId");
+			try {
+				
+				//得到投标记录信息
+				Map<String, String> params_record = new HashMap<String, String>();
+				params_record.put("apiLevel", Constants.apiLevel + "");
+				params_record.put("investId", investId);
+				params_record.put("pageNo", "1");
+				params_record.put("pageSize", "20");
+				http_result = HttpUtil.httpPost(Constants.investhistorylisturl, params_record);
+				JSONObject jo = JSONObject.fromObject(http_result);
+				if ("100".equals(jo.get("result"))) {
+					log.info("code:100,message:投标记录接口请求成功");
+					
+				}else {
+					log.info("code:"+jo.get("result").toString()+",message:投标记录接口请求失败，错误信息"+jo.getString("resultDesc"));
+				
+				}
+			} catch (Exception e) {
+				log.info("投标记录信息接口失败，发生异常,error:"+e.getMessage());
+				
+			}
+			response.setContentType("text/html; charset=UTF-8");
+	         PrintWriter out = response.getWriter();
+	         out.print(http_result);
+	         out.flush();
+	         out.close();
 		}
 		
 		/*
@@ -663,6 +855,15 @@ public class AccountController extends BaseController{
 		}
 		
 		/*
+		* 散标专区
+		*/
+		@RequestMapping(value = "sbinvests", method = RequestMethod.GET)
+		public String SBinvestlist_page(HttpServletRequest request, Model model) {
+			model.addAttribute("rootdomain", rootdomain);
+			return "bid/SBinvestList";
+		}
+		
+		/*
 		* 得到标列表、转贷专区的列表、投资列表
 		* http://pay.cqg365.com/p2p/app/getInvestListByArea.html?
 		* areaType=3&pageNo=1&pageSize=10&status=14&borrowType=100&
@@ -676,7 +877,7 @@ public class AccountController extends BaseController{
 			params.put("apiLevel", Constants.apiLevel+"");
 			params.put("areaType", this.getParameter("areaType"));
 			params.put("pageNo", this.getParameter("pageNo"));
-			params.put("pageSize", "10");
+			params.put("pageSize", "20");
 			params.put("status", this.getParameter("status"));
 			params.put("borrowType", this.getParameter("borrowType"));
 			params.put("time_limit", this.getParameter("time_limit"));
@@ -705,14 +906,214 @@ public class AccountController extends BaseController{
 	         out.close();
 		}
 		
+		/*
+		* 得到大客户标列表
+		*/
+		@RequestMapping(value = "getvipborrowinfourl")
+		public void getvipborrowinfourl(HttpServletResponse response, HttpServletRequest request) throws IOException {
+			Map<String, String> params = new HashMap<String, String>();
+			String http_result ="";
+			
+			params.put("apiLevel", Constants.apiLevel+"");
 		
+			try {
+				
+				
+				http_result = HttpUtil.httpPost(Constants.getvipborrowinfourl, params);
+				JSONObject jo = JSONObject.fromObject(http_result);
+				if ("100".equals(jo.get("result"))) {
+					log.info("code:100,message:vip列表接口请求成功");
+					
+				}else {
+					log.info("code:"+jo.get("result").toString()+",message:vip列表接口请求失败，错误信息"+jo.getString("resultDesc"));
+				
+				}
+			} catch (Exception e) {
+				log.info("请求投资列表信息接口失败，发生异常,error:"+e.getMessage());
+				
+			}
+			response.setContentType("text/html; charset=UTF-8");
+	         PrintWriter out = response.getWriter();
+	         out.print(http_result);
+	         out.flush();
+	         out.close();
+		}
+		
+		
+		/*
+		 * 显示某一个vip标的的详情页面
+		 */
+			@RequestMapping(value = "vipbidinfo/{id}", method = RequestMethod.GET)
+			public String vipbidinfo_page(HttpServletRequest request, Model model,
+					@PathVariable("id") String id) {
+				Map<String, String> result = new HashMap<String, String>();
+				Map<String, String> params = new HashMap<String, String>();
+				params.put("apiLevel", Constants.apiLevel + "");
+				params.put("borrow_vip_id", id);
+				String http_record_result="";
+				try {
+					if(this.servercookie==null){
+						//清除本地cookie
+						clearcookie();
+					}else{
+						String nop = this.getCookie(Constants.cookie_key);
+						if (!StringUtils.isBlank(nop)) {
+							
+						}else{
+							//清除本地cookie
+							clearcookie();
+						}
+					}
+					if(this.servercookie==null){
+						//本地存储的服务器相关cookie不存在，则同步清除本地cookie
+						return "login";
+					}
+					//得到投标详情信息
+					String http_result = HttpUtil.httpPost(Constants.getvipborrowbyidurl, params);
+					JSONObject jo = JSONObject.fromObject(http_result);
+					if ("100".equals(jo.get("result"))) {
+						result.put("code", "100");
+						
+						result.put("mess", "请求成功！");
+						JSONObject borrowjo=JSONObject.fromObject(jo.getString("vipBorrow"));
+						result.put("investId", borrowjo.getString("id"));
+						result.put("status", borrowjo.getString("status"));
+						result.put("title", borrowjo.getString("name"));
+						
+						result.put("rate", borrowjo.getString("apr"));
+						result.put("termType", borrowjo.getString("isday"));
+						result.put("term", borrowjo.getString("time_limit"));
+						result.put("totalNum", borrowjo.getString("account"));
+						result.put("guaranteeCompany", borrowjo.getString("org"));
+						result.put("returnType", borrowjo.getString("style"));
+						
+						if(jo.get("description")!=null){
+							result.put("description", borrowjo.getString("description"));
+						}else{
+							result.put("description", "");
+						}
+						
+						
+						if(jo.get("publish_time")!=null){
+							result.put("last_time", borrowjo.getString("publish_time"));
+						}
+						else{
+							result.put("last_time", "");
+						}
+						
+					}else {
+						result.put("code", jo.get("result").toString());
+						result.put("mess", jo.getString("resultDesc"));
+					
+					}
+				} catch (Exception e) {
+					log.info("请求标的详情信息接口失败,error:"+e.getMessage());
+					result.put("mess", "请求失败");
+					
+				}
+				
+				model.addAttribute("info", result);
+				return "bid/vipbidInfo";
+			}
+			
+			
+			/*
+			* vip标的投标记录查询
+			*/
+			@RequestMapping(value = "getvipinvestrecords")
+			public void getvipinvestrecords(HttpServletResponse response, HttpServletRequest request) throws IOException {
+				Map<String, String> params = new HashMap<String, String>();
+				String http_result ="";
+				String investId = this.getParameter("investId");
+				try {
+					
+					//得到投标记录信息
+					Map<String, String> params_record = new HashMap<String, String>();
+					params_record.put("apiLevel", Constants.apiLevel + "");
+					params_record.put("borrow_vip_id", investId);
+					params_record.put("pageNo", "1");
+					params_record.put("pageSize", "20");
+					http_result = HttpUtil.httpPost(Constants.getvipborroworderinfourl, params_record);
+					JSONObject jo = JSONObject.fromObject(http_result);
+					if ("100".equals(jo.get("result"))) {
+						log.info("code:100,message:投标记录接口请求成功");
+						
+					}else {
+						log.info("code:"+jo.get("result").toString()+",message:投标记录接口请求失败，错误信息"+jo.getString("resultDesc"));
+					
+					}
+				} catch (Exception e) {
+					log.info("投标记录信息接口失败，发生异常,error:"+e.getMessage());
+					
+				}
+				response.setContentType("text/html; charset=UTF-8");
+		         PrintWriter out = response.getWriter();
+		         out.print(http_result);
+		         out.flush();
+		         out.close();
+			}
 		/*
 		* 充值页面
 		*/
 		@RequestMapping(value = "recharge", method = RequestMethod.GET)
-		public String bindcard_page(HttpServletRequest request, Model model) {
+		public String bindcard_page( Model model,HttpServletRequest request,HttpServletResponse response) throws IOException {
+			if(this.servercookie==null){
+				//清除本地cookie
+				clearcookie();
+			}else{
+				String nop = this.getCookie(Constants.cookie_key);
+				if (!StringUtils.isBlank(nop)) {
+					
+				}else{
+					//清除本地cookie
+					clearcookie();
+				}
+			}
+			if(this.servercookie==null){
+				//本地存储的服务器相关cookie不存在，则同步清除本地cookie
+				return "login";
+			}
 			
 			return "bid/recharge";
+		}
+		
+		/*
+		 * 充值
+		 */
+		@RequestMapping(value="mobilepay")
+		public @ResponseBody Map<String, String> mobilepay( Model model ) {
+			String money = this.getParameter("money");
+			Map<String, String> result = new HashMap<String, String>();
+			result.put("code", "1");
+			if (StringUtils.isBlank(money)) {
+				result.put("mess", "请填写充值金额");
+				return result;
+			}
+			
+			Map<String, String> params = new HashMap<String, String>();
+			params.put("apiLevel", Constants.apiLevel+"");
+			params.put("money", money);
+			
+			try {
+				
+				String http_result = HttpUtil.httpPost_check(Constants.mobilebankurl, params,this.servercookie);
+				JSONObject jo = JSONObject.fromObject(http_result);
+				if ("100".equals(jo.get("result"))) {
+					result.put("code", "0");
+					result.put("mess", "充值成功！");
+					result.put("url", jo.getString("url"));
+					
+					return result;
+				}else {
+					result.put("code", "1");
+					result.put("mess", "充值失败！");
+					return result;
+				}
+			} catch (Exception e) {
+				log.info("请求充值接口失败,error:"+e.getMessage());
+				result.put("mess", "充值失败！");
+				return result;
+			}
 		}
 		
 		/*
@@ -721,16 +1122,19 @@ public class AccountController extends BaseController{
 		@RequestMapping(value = "bankcards", method = RequestMethod.GET)
 		public String bankcards_page(HttpServletRequest request, Model model) {
 			if(this.servercookie==null){
-				//本地存储的服务器相关cookie不存在，则同步清除本地cookie
 				//清除本地cookie
-				this.setCookie(Constants.cookie_key, "", 1);
-				this.setCookie(Constants.cookie_username, "", 1);
-				this.setCookie(Constants.cookie_realstatus, "", 1);
-				this.setCookie(Constants.cookie_phone, "", 1);
-				this.setCookie(Constants.cookie_img, "", 1);
-				this.setCookie(Constants.cookie_cardid, "", 1);
-				this.setCookie(Constants.cookie_realname, "", 1);
-				this.setCookie(Constants.cookie_userid, "", 1);
+				clearcookie();
+			}else{
+				String nop = this.getCookie(Constants.cookie_key);
+				if (!StringUtils.isBlank(nop)) {
+					
+				}else{
+					//清除本地cookie
+					clearcookie();
+				}
+			}
+			if(this.servercookie==null){
+				//本地存储的服务器相关cookie不存在，则同步清除本地cookie
 				return "login";
 			}
 			return "bid/bankCardList";
@@ -1071,7 +1475,22 @@ public class AccountController extends BaseController{
 		 */
 		@RequestMapping(value = "feedback")
 		public String feedback_page(Model model) {
-			model.addAttribute("rootdomain", "hello world");
+			if(this.servercookie==null){
+				//清除本地cookie
+				clearcookie();
+			}else{
+				String nop = this.getCookie(Constants.cookie_key);
+				if (!StringUtils.isBlank(nop)) {
+					
+				}else{
+					//清除本地cookie
+					clearcookie();
+				}
+			}
+			if(this.servercookie==null){
+				//本地存储的服务器相关cookie不存在，则同步清除本地cookie
+				return "login";
+			}
 			return "account/feedback";
 		}
 		
@@ -1080,7 +1499,22 @@ public class AccountController extends BaseController{
 		 */
 		@RequestMapping(value = "pwd_reset")
 		public String pwd_reset_page(Model model) {
-			model.addAttribute("rootdomain", "hello world");
+			if(this.servercookie==null){
+				//清除本地cookie
+				clearcookie();
+			}else{
+				String nop = this.getCookie(Constants.cookie_key);
+				if (!StringUtils.isBlank(nop)) {
+					
+				}else{
+					//清除本地cookie
+					clearcookie();
+				}
+			}
+			if(this.servercookie==null){
+				//本地存储的服务器相关cookie不存在，则同步清除本地cookie
+				return "login";
+			}
 			return "account/pwd_reset";
 		}
 		
@@ -1089,7 +1523,22 @@ public class AccountController extends BaseController{
 		 */
 		@RequestMapping(value = "rn_confirm/page")
 		public String realnameConfirm_page(Model model) {
-			model.addAttribute("rootdomain", "hello world");
+			if(this.servercookie==null){
+				//清除本地cookie
+				clearcookie();
+			}else{
+				String nop = this.getCookie(Constants.cookie_key);
+				if (!StringUtils.isBlank(nop)) {
+					
+				}else{
+					//清除本地cookie
+					clearcookie();
+				}
+			}
+			if(this.servercookie==null){
+				//本地存储的服务器相关cookie不存在，则同步清除本地cookie
+				return "login";
+			}
 			return "account/rn_confirm";
 		}
 		
@@ -1140,7 +1589,22 @@ public class AccountController extends BaseController{
 		 */
 		@RequestMapping(value = "indetify_account")
 		public String idetify_page(Model model) {
-			model.addAttribute("rootdomain", "hello world");
+			if(this.servercookie==null){
+				//清除本地cookie
+				clearcookie();
+			}else{
+				String nop = this.getCookie(Constants.cookie_key);
+				if (!StringUtils.isBlank(nop)) {
+					
+				}else{
+					//清除本地cookie
+					clearcookie();
+				}
+			}
+			if(this.servercookie==null){
+				//本地存储的服务器相关cookie不存在，则同步清除本地cookie
+				return "login";
+			}
 			return "account/indetify_account";
 		}
 		
@@ -1149,8 +1613,37 @@ public class AccountController extends BaseController{
 		 */
 		@RequestMapping(value = "update_pwd")
 		public String update_pwd_page(Model model) {
-			model.addAttribute("rootdomain", "hello world");
+			if(this.servercookie==null){
+				//清除本地cookie
+				clearcookie();
+			}else{
+				String nop = this.getCookie(Constants.cookie_key);
+				if (!StringUtils.isBlank(nop)) {
+					
+				}else{
+					//清除本地cookie
+					clearcookie();
+				}
+			}
+			if(this.servercookie==null){
+				//本地存储的服务器相关cookie不存在，则同步清除本地cookie
+				return "login";
+			}
 			return "account/update_pwd";
+		}
+		
+		public void clearcookie(){
+			this.servercookie=null;
+			//清除本地cookie
+			this.setCookie(Constants.cookie_key, "", 1);
+			this.setCookie(Constants.cookie_username, "", 1);
+			this.setCookie(Constants.cookie_realstatus, "", 1);
+			this.setCookie(Constants.cookie_phone, "", 1);
+			this.setCookie(Constants.cookie_img, "", 1);
+			this.setCookie(Constants.cookie_cardid, "", 1);
+			this.setCookie(Constants.cookie_realname, "", 1);
+			this.setCookie(Constants.cookie_userid, "", 1);
+			
 		}
 
 }

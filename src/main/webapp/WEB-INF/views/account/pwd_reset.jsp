@@ -9,7 +9,7 @@
 <html>
 	<head>
 		<meta charset="utf-8" />
-		<meta name="viewport" content="initial-scale=1.0,maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,maximum-scale=1, user-scalable=no">
+		<meta name="viewport" content="initial-scale=0.5,maximum-scale=1.0,minimum-scale=0.5,user-scalable=0,width=device-width,maximum-scale=1, user-scalable=no">
 		<meta name="format-detection" content="telephone=no" />
 		<meta name="format-detection" content="email=no" />
 	
@@ -36,7 +36,7 @@
                 <input class="pr_contact" type="text" name="password2" placeholder="请再输入一次">
             </div>
             <div class="pr_sub">
-                <input class="pr_submit" type="submit" value="ç¡®å®">
+                <input class="pr_submit" type="submit" value="重置密码">
             </div>
         </form>
     </div>

@@ -10,7 +10,7 @@ public class Constants {
 	public static String wfpath = "/opt/cqg/";
 	
 	public static String server = "http://pay.cqg365.com/p2p/app/";
-	public static String locationUrl = "http://210.14.144.120:8081/cqg-web/homepage";
+	public static String locationUrl = "http://210.14.144.120:8081/cqg-web/";
 	
 	public static String registurl = server+"register.html";
 	public static String identifyurl = server+"sendPhoneCode.html";
@@ -282,7 +282,7 @@ public class Constants {
 	public static final int apiLevel = 1;
 	public static final String cookie_key = "cqg_lpc";
 	public static final int EXP_ONEDAY = 24 * 60 * 60;
-	public static final int EXP_HALFHOUR = 1 * 30 * 60;
+	public static final int EXP_HALFHOUR = 3 * 60 * 60;
 	/**cookies相关的数据*/
 	public static final String cookie_name = "cqg_name";
 	public static final String cookie_email = "cqg_email";

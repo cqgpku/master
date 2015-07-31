@@ -55,7 +55,9 @@ init();
 				//加载地区信息
 				var banks=resp.bankData;
 				for(var i=0;i<banks.length;i++){
-					$(".bankcard_middle").append("<div class=\"bankcard_middle_box\"><div class=\"bankcard_middle_box_label\" id=\""+banks[i].bankId+"\" onclick=\"showdelete(this);\"><label >"+banks[i].branch+"</label><br><label style=\"color:#cccccc;\">尾号"+banks[i].bankaccount+"</label></div><div class=\"bankcard_middle_box_delete\" id=\""+banks[i].bankId+"del\" onclick=\"deletebank(this);\">删除</div></div>");
+					var cardid=banks[i].bankaccount;
+					cardid=cardid.substr(cardid.length-4);
+					$(".bankcard_middle").append("<div class=\"bankcard_middle_box\"><div class=\"bankcard_middle_box_label\" id=\""+banks[i].bankId+"\" onclick=\"showdelete(this);\"><label >"+banks[i].branch+"</label><br><label style=\"color:#cccccc;\">尾号"+cardid+"</label></div><div class=\"bankcard_middle_box_delete\" id=\""+banks[i].bankId+"del\" onclick=\"deletebank(this);\">删除</div></div>");
 				}
 			}
 		})
