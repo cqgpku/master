@@ -133,8 +133,8 @@
 		
 		<div id="hidden_pwd" class="hidden_pwd">
 		<div class="hidden_pwd_box">
-		<div class="hidden_pwd_text"><input id="payPassword" style="width:90%;height:78px;margin-top:30px;font-size:28px; border:1px solid #25c3da;border-radius: 5px;" type="text" placeholder="请输入交易密码"  maxlength="11"></div>
-		<div class="hidden_pwd_text"><input id="borrowpayPassword" style="width:90%;height:78px;font-size:28px; border:1px solid #25c3da;border-radius: 5px;" type="text" placeholder="请输入定向密码，无则不填"  maxlength="11"></div>
+		<div class="hidden_pwd_text"><input id="payPassword" style="width:90%;height:78px;margin-top:30px;font-size:28px; border:1px solid #25c3da;border-radius: 5px;" type="password" placeholder="请输入交易密码"  maxlength="11"></div>
+		<div class="hidden_pwd_text"><input id="borrowpayPassword" style="width:90%;height:78px;font-size:28px; border:1px solid #25c3da;border-radius: 5px;" type="password" placeholder="请输入定向密码，无则不填"  maxlength="11"></div>
 		<div class="hidden_pwd_button">
 		<div class="hidden_pwd_button_box">
 		<div class="hidden_pwd_button_box1" style="background-color: #cccccc;" onclick="cancelpwd();">
@@ -183,6 +183,7 @@
 			$("#bid_bottom").css("background-color", "#cccccc");
 			$("#bid_bottom").html("不可抢购");
 		}
+		calculateInterest();
 			
 	}
 	
@@ -265,13 +266,15 @@
 		}
 		if(borrowPayPassword==null)
 			borrowPayPassword="";
-		$.post(rooturl + "/investtender" , {investId:investId,money:money,payPassword:payPassword,city:cityid,area:zoneid,branchName:branchname,codeNo:codeid} , function(resp){
-			var result=eval('(' + resp + ')')
-			if(result.code=="0")
+		$.post(rooturl + "/investtender" , {investId:investId,money:money,payPassword:payPassword,borrowPayPassword:borrowPayPassword} , function(resp){
+			if(typeof(resp) != "object"){
+				resp = JSON.parse(resp);
+			}
+			if(resp.code=="0")
 			{
-				$.toast('投资成功！' , 2000);
+				$.toast(resp.mess , 2000);
 			}else{
-				$.toast('投资失败！' , 2000);
+				$.toast(resp.mess , 2000);
 			}
 		})
 	}

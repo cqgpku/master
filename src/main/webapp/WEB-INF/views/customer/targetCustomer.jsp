@@ -27,10 +27,10 @@
 	</head>
 	<body style="background: #fff;">
 		<div class="targetCustomer_top">
-		<div class="targetCustomer_top top">预约借款</div>
+		<!-- <div class="targetCustomer_top top">预约借款</div>
 		<div class="targetCustomer_top middle">
 		<label >预约投资</label>
-		</div> 
+		</div>  -->
 		
 		</div>
 		

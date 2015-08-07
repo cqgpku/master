@@ -66,11 +66,11 @@
 				resp = JSON.parse(resp);
 			}
 			$.toast(resp.mess , 2000);
-			if(resp.code == 0){
+			
 				setTimeout(function(){
 					window.location.reload();
 				},1000);
-			}
+			
 			
 			})
 

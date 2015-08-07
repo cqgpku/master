@@ -176,7 +176,23 @@ div.account_middle_content{
 	height:150px;
 	background:#fff;
 }
-div.account_middle_content_block{
+
+
+@media screen and (max-width:696px){
+	div.account_middle_content_block{
+	width:29%;
+	height:150px;
+	float: left;
+	margin-right:15px;
+	vertical-align: middle;
+	text-align: center;
+	background-color: #f2f5f7;
+	
+}
+}
+
+@media screen and (min-width:696px){
+	div.account_middle_content_block{
 	width:30%;
 	height:150px;
 	float: left;
@@ -185,6 +201,7 @@ div.account_middle_content_block{
 	text-align: center;
 	background-color: #f2f5f7;
 	
+}
 }
 div.account_middle_content_block img{
 	width:100px;

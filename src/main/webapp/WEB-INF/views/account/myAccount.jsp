@@ -72,11 +72,11 @@
 		<div class="account_middle_content">
 		<div class="account_middle_content_block" onclick="window.location.href='<%=basePath%>jwinvests'">
 		<img alt="#" src="../img/4.png"><br>
-		<label>绝味专区</label>
+		<label>供应链专区</label>
 		</div>
 		<div class="account_middle_content_block" style="margin-left: 10px;" onclick="window.location.href='<%=basePath%>invests'">
 		<img alt="#" src="../img/5.png"><br>
-		<label>转贷专区</label>
+		<label>短融贷专区</label>
 		</div>
 		<div class="account_middle_content_block" style="margin-left: 10px;" onclick="window.location.href='<%=basePath%>targetcustomer/20106'">
 		<img alt="#" src="../img/6.png"><br>
@@ -88,13 +88,13 @@
 		<img alt="#" src="../img/7.png"><br>
 		<label>账户管理</label>
 		</div>
-		<div class="account_middle_content_block" style="margin-left: 10px;">
+		<div class="account_middle_content_block" style="margin-left: 10px;background-color: #cccccc;" >
 		<img alt="#" src="../img/8.png"><br>
-		<label style="color:#ff0033;">手势密码</label>
+		<label style="color:#cccccc;">手势密码</label>
 		</div>
-		<div class="account_middle_content_block" style="margin-left: 10px;">
+		<div class="account_middle_content_block" onclick="window.location.href='<%=basePath%>drawCash'">
 		<img alt="#" src="../img/9.png"><br>
-		<label style="color:#ff0033;">提现</label>
+		<label>提现</label>
 		</div>
 		</div>
 		</div>

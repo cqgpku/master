@@ -125,30 +125,14 @@
 		<label>到期预计可获本息（元）：<span style="color: #25c3da;" id="interest"></span></label>
 		</div>
 
-		<div id="bid_hidden_middle_button" class="bid_hidden_middle_button" onclick="investmoney();">立即投资
+		<div id="bid_hidden_middle_button" class="bid_hidden_middle_button" onclick="investmoney();">预约
 		</div>
 		
 		</div>
 		
 		
-		<div id="hidden_pwd" class="hidden_pwd">
-		<div class="hidden_pwd_box">
-		<div class="hidden_pwd_text"><input id="payPassword" style="width:90%;height:78px;margin-top:30px;font-size:28px; border:1px solid #25c3da;border-radius: 5px;" type="text" placeholder="请输入交易密码"  maxlength="11"></div>
-		<div class="hidden_pwd_text"><input id="borrowpayPassword" style="width:90%;height:78px;font-size:28px; border:1px solid #25c3da;border-radius: 5px;" type="text" placeholder="请输入定向密码，无则不填"  maxlength="11"></div>
-		<div class="hidden_pwd_button">
-		<div class="hidden_pwd_button_box">
-		<div class="hidden_pwd_button_box1" style="background-color: #cccccc;" onclick="cancelpwd();">
-		取消
-		</div>
-		<div class="hidden_pwd_button_box2" onclick="investpay();">
-		确定
-		</div>
-		</div>
-		</div>
-		</div>
-		</div>
 		
-		<div id="bid_bottom" class="bid_bottom" onclick="invest();">立即投资
+		<div id="bid_bottom" class="bid_bottom" onclick="invest();">预约
 		</div>
 		<div id="ly" class="ly" ></div>
 		<div id="ly1" class="ly1" ></div>
@@ -183,7 +167,7 @@
 			$("#bid_bottom").css("background-color", "#cccccc");
 			$("#bid_bottom").html("不可抢购");
 		}
-			
+		calculateInterest();
 	}
 	
 	function invest(){
@@ -212,9 +196,20 @@
 	
 	function investmoney(){
 		
- 		$("#hidden_pwd").fadeIn(200);
- 		$("#ly").fadeIn(200);
-    	$("#ly1").fadeIn(200);
+		var investId = $('#investid').val();
+		var money = $('#investmoney').val();
+		
+		$.post(rooturl + "/ordervipborrowurl" , {borrow_vip_id:investId,money:money} , function(resp){
+			if(typeof(resp) != "object"){
+				resp = JSON.parse(resp);
+			}
+			if(resp.code=="0")
+			{
+				$.toast(resp.mess , 2000);
+			}else{
+				$.toast(resp.mess , 2000);
+			}
+		})
 	}
 	
 	function popup(popupName){ 
@@ -249,38 +244,6 @@
 		calculateInterest();
 	}
 	
-	function investpay(){
-		var flag=true;
-		var investId = $('#investid').val();
-		var money = $('#investmoney').val();
-		var payPassword = $('#payPassword').val();
-		var borrowPayPassword = $('#borrowpayPassword').val();
-		if($('#borrowpwd').val()!=""){
-			if($('#borrowpwd').val()!=borrowPayPassword){
-				$.toast('定向交易密码不正确！' , 2000);
-				flag=false;
-			}else{
-				flag=true;
-			}
-		}
-		if(borrowPayPassword==null)
-			borrowPayPassword="";
-		$.post(rooturl + "/investtender" , {investId:investId,money:money,payPassword:payPassword,city:cityid,area:zoneid,branchName:branchname,codeNo:codeid} , function(resp){
-			var result=eval('(' + resp + ')')
-			if(result.code=="0")
-			{
-				$.toast('投资成功！' , 2000);
-			}else{
-				$.toast('投资失败！' , 2000);
-			}
-		})
-	}
-	
-	function cancelpwd(){
-		$("#ly1").fadeOut(200);
-    	$("#ly").fadeIn(200);
- 		$("#hidden_pwd").fadeOut(200);
-	}
 	
 	//计算利息
 	function calculateInterest(){
